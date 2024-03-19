@@ -1,0 +1,233 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* You can add global styles to this file, and also import other style files */
+* {
+    box-sizing: border-box;
+  }
+  p {
+    font-family: Roboto ;
+  }
+  #dashboard {
+    display: flex;
+    flex-direction: column;
+    background:#cfd8dc;
+    height: 100vh;
+  }
+  
+  
+  .dashboard__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background: #90a4ae; */
+    flex-wrap: wrap;
+    background: #2196f3;
+    color: white;
+    padding: 0.5rem 2rem;
+    min-height: 80px;
+  }
+  
+  
+  .dash__controls {
+    display: flex;
+    justify-content: flex-end;
+    border: 1px solid black;
+    padding: 1rem;
+  }
+  .dashboard__header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+  .dash-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem;
+  }
+  .dash-row + .dash-row {
+    margin: 0rem 1rem;
+  }
+  .dash-row .mat-card {
+    flex: 1;
+    min-width: 200px;
+    min-height: 250px;
+    margin: 1rem;
+  }
+  .mat-card {
+    padding: 10px !important;
+  }
+  .mat-radio-outer-circle {
+    width: 15px !important;
+    height: 15px !important;
+  }
+  .mat-radio-inner-circle {
+    width: 15px !important;
+    height: 15px !important;
+  }
+  .mat-card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.2rem;
+  }
+  
+  #card-0-1 {
+   background: #FFC107; 
+  }
+  
+  #card-0-2 {
+   background: #EEE; 
+  }
+  
+  #card-1-1 {
+    background: #2196f3;
+  }
+  
+  /* Material manual overrides */
+  
+  .mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary {
+    background: #2196f3;
+  }
+
+  .pp-5{
+    padding: 5px !important;
+  }
+  .pp-10{
+    padding: 10px !important;
+  }
+  .pp-15{
+    padding: 15px !important;
+  }
+  .pp-20{
+    padding: 20px !important;
+  }
+  .pp-25{
+    padding: 25px !important;
+  }
+  .pp-30{
+    padding: 30px !important;
+  }
+
+  .ppl-5{
+    padding-left: 5px !important;
+  }
+  .ppl-10{
+    padding-left: 10px !important;
+  }
+  .ppl-15{
+    padding-left: 15px !important;
+  }
+  .ppl-20{
+    padding-left: 20px !important;
+  }
+  .ppl-25{
+    padding-left: 25px !important;
+  }
+  .ppl-30{
+    padding-left: 30px !important;
+  }
+  .ppr-5{
+    padding-right: 5px !important;
+  }
+  .ppr-10{
+    padding-right: 10px !important;
+  }
+  .ppr-15{
+    padding-right: 15px !important;
+  }
+  .ppr-20{
+    padding-right: 20px !important;
+  }
+  .ppr-25{
+    padding-right: 25px !important;
+  }
+  .ppr-30{
+    padding-right: 30px !important;
+  }
+  .mm-5{
+    margin: 5px !important;
+  }
+  .mm-10{
+    margin: 10px !important;
+  }
+  .mm-15{
+    margin: 15px !important;
+  }
+  .mm-20{
+    margin: 20px !important;
+  }
+  .mm-25{
+    margin: 25px !important;
+  }
+  .mm-30{
+    margin: 30px !important;
+  }
+  .mmt-5{
+    margin-top: 5px !important;
+  }
+  .mmt-10{
+    margin-top: 10px !important;
+  }
+  .mmt-15{
+    margin-top: 15px !important;
+  }
+  .mmt-20{
+    margin-top: 20px !important;
+  }
+  .mmt-25{
+    margin-top: 25px !important;
+  }
+  .mmt-30{
+    margin-top: 30px !important;
+  }
+  .mml-5{
+    margin-left: 5px !important;
+  }
+  .mml-10{
+    margin-left: 10px !important;
+  }
+  .mml-15{
+    margin-left: 15px !important;
+  }
+  .mml-20{
+    margin-left: 20px !important;
+  }
+
+  .mmr-5{
+    margin-right: 5px !important;
+  }
+  .mmr-10{
+    margin-right: 15px !important;
+  }
+  .mmr-15{
+    margin-right: 15px !important;
+  }
+  .mmr-20{
+    margin-right: 20px !important;
+  }
+  .font-size-8{
+    font-size: 8px !important;
+  }
+  .font-size-10{
+    font-size: 10px !important;
+  }
+  .font-size-12{
+    font-size: 12px !important;
+  }
+  .font-size-14{
+    font-size: 14px !important;
+  }
+  .font-size-16{
+    font-size: 16px !important;
+  }
+  .font-size-18{
+    font-size: 18px !important;
+  }
+  .font-size-20{
+    font-size: 20px !important;
+  }
+  .text-align-center{
+    text-align: center !important;
+  }

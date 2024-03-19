@@ -1,0 +1,133 @@
+.container {
+    margin-top: 10px
+}
+
+.counter-box {
+    display: block;
+    background: #f6f6f6;
+    padding: 40px 20px 37px;
+    text-align: center
+}
+
+.counter-box p {
+    margin: 5px 0 0;
+    padding: 0;
+    color: #909090;
+    font-size: 18px;
+    font-weight: 500
+}
+
+.counter-box i {
+    font-size: 60px;
+    margin: 0 0 15px;
+    color: #d2d2d2
+}
+
+.counter {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    color: #666;
+    line-height: 28px
+}
+
+.counter-box.colored {
+    background: #3acf87
+}
+
+.counter-box.colored p,
+.counter-box.colored i,
+.counter-box.colored .counter {
+    color: #fff
+}
+.chart-div-align{
+    padding: 20px;
+    height: 65vh;
+}
+
+.two-tone-card {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #3b3a64, #aa2cc7);
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .two-tone-card h2 {
+    margin-top: 0;
+  }
+  
+  .two-tone-card p {
+    margin-bottom: 0;
+  }
+
+  .form-select {
+    border-radius: 25px;
+  }
+  .white-color{
+    color: white;
+  }
+  .small-text{
+    font-size: 8px
+  }
+  .number-text{
+    font-size: 14px;
+  }
+  .number-text-small{
+    font-size: 10px;
+  }
+  .mat-card-title {
+    font-size: 19px;
+  }
+  .text-title-size{
+    font-size: 12px;
+    font-weight: 500 !important;
+  }
+  .card-title-text{
+    color: #2A3AC4;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .total-monthly-sale-text{
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .inner-mat-card{
+    height: 100px;
+  }
+  .mat-row .mat-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+  }
+  .chart-title{
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .chart-sub-title{
+    font-size: 10px;
+  }
+  .chat-div-alignment{
+    height: 300px;
+  }
+  .table-th{
+    color: #C839B9;
+    font-weight: 600;
+  }
+  tr.mat-header-row {
+    height: 30px !important;
+}
+tr.mat-row, tr.mat-footer-row {
+  height: 30px;
+}
+.folt-right{
+    float: right;
+    color: #2A3AC4;
+    
+}
+.title-text{
+    font-size: 22px;
+    text-align: center;
+}

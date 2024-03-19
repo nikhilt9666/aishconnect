@@ -1,0 +1,490 @@
+<!-- <div class="container">
+  <div class="row">
+    <div class="four col-md-6">
+      <mat-card id="card-0-2" >
+        <mat-label><strong>Time Line: </strong></mat-label> &nbsp;&nbsp;
+        <mat-radio-group aria-label="Select an option" >
+          <mat-radio-button value="1" class="p-2" (change)="radioButtonTimeLine($event)">Yearly</mat-radio-button>
+          <mat-radio-button value="2" class="p-2" (change)="radioButtonTimeLine($event)">Quaterly</mat-radio-button>
+          <mat-radio-button value="3" class="p-2" (change)="radioButtonTimeLine($event)">Monthly</mat-radio-button>
+          <mat-radio-button value="4" class="p-2" (change)="radioButtonTimeLine($event)">Custom Date</mat-radio-button>
+        </mat-radio-group>
+      </mat-card>
+    </div>
+    <div class="four col-md-5" *ngIf="radioBtnFlag==1">
+      <mat-card id="card-0-2" >
+        <mat-radio-group aria-label="Select an option" >
+          <mat-radio-button value="2023" class="p-2" (change)="radioButtonYearSelection($event)">2023</mat-radio-button>
+          <mat-radio-button value="2024" class="p-2" (change)="radioButtonYearSelection($event)">2024</mat-radio-button>
+        </mat-radio-group>
+      </mat-card>
+    </div>
+    <div class="four col-md-6" *ngIf="radioBtnFlag==3">
+      <mat-card id="card-0-2" >
+        <mat-radio-group aria-label="Select an option" >
+          <mat-radio-button value="jan" class="p-2" (change)="radioButtonMonthSelection($event)">Jan</mat-radio-button>
+          <mat-radio-button value="feb" class="p-2" (change)="radioButtonMonthSelection($event)">Feb</mat-radio-button>
+          <mat-radio-button value="mar" class="p-2" (change)="radioButtonMonthSelection($event)">Mar</mat-radio-button>
+          <mat-radio-button value="april" class="p-2" (change)="radioButtonMonthSelection($event)">Apr</mat-radio-button>
+          <mat-radio-button value="may" class="p-2" (change)="radioButtonMonthSelection($event)">May</mat-radio-button>
+          <mat-radio-button value="jun" class="p-2" (change)="radioButtonMonthSelection($event)">Jun</mat-radio-button>
+          <mat-radio-button value="jul" class="p-2" (change)="radioButtonMonthSelection($event)">Jul</mat-radio-button>
+          <mat-radio-button value="aug" class="p-2" (change)="radioButtonMonthSelection($event)">Aug</mat-radio-button>
+          <mat-radio-button value="sep" class="p-2" (change)="radioButtonMonthSelection($event)">Sep</mat-radio-button>
+          <mat-radio-button value="oct" class="p-2" (change)="radioButtonMonthSelection($event)">Oct</mat-radio-button>
+          <mat-radio-button value="nov" class="p-2" (change)="radioButtonMonthSelection($event)">Nov</mat-radio-button>
+          <mat-radio-button value="dec" class="p-2" (change)="radioButtonMonthSelection($event)">Dec</mat-radio-button>
+        </mat-radio-group>
+      </mat-card>
+    </div>
+    <div class="four col-md-6" *ngIf="radioBtnFlag==2">
+      <mat-card id="card-0-2" >
+        <mat-radio-group aria-label="Select an option" >
+          <mat-radio-button value="janTomar" class="p-2" (change)="radioButtonQuaterSelection($event)">Jan to March</mat-radio-button>
+          <mat-radio-button value="aprTojun" class="p-2" (change)="radioButtonQuaterSelection($event)">Apr to Jun</mat-radio-button>
+          <mat-radio-button value="julTosep" class="p-2" (change)="radioButtonQuaterSelection($event)">July to Sep</mat-radio-button>
+          <mat-radio-button value="octTodec" class="p-2" (change)="radioButtonQuaterSelection($event)">Oct to Dec</mat-radio-button>
+        </mat-radio-group>
+      </mat-card>
+    </div>
+    <div class="four col-md-6" *ngIf="radioBtnFlag==4">
+      <mat-card id="card-0-2" >
+        <mat-form-field appearance="fill">
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Start date">
+            <input matEndDate placeholder="End date">
+          </mat-date-range-input>
+          <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </mat-card>
+    </div>
+  </div>
+  
+</div> -->
+
+<div class="row col-12 pp-5">
+  <div class="col-2 pp-5">
+      
+          <div class="two-tone-card mm-10">
+            <!-- Your card content goes here -->
+            <select class="form-select" aria-label="Default select example" style="margin-bottom: 10px;">
+              <option value="2024" selected>2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+            </select> 
+            <select class="form-select" aria-label="Default select example" style="margin-bottom: 10px;">
+              <option value="January" selected>January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+            <select class="form-select" aria-label="Default select example" >
+              <option value="All" selected>All</option>
+              <option value="2023">Code-111</option>
+              <option value="2022">COde-222</option>
+            </select> 
+          </div>
+          <div class="two-tone-card mm-10" style="background: #0007A8;height: 40px">
+            <h4>KPI's</h4>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #2A3AC4;">
+            <!-- Your card content goes here -->
+            <div class="row">
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.salesYY}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{ buildCardData.totalGrandTotalSalesYOY}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="text-title-size">SALES(CR.)</div>
+              </div>
+            </div>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #8000FF;">
+            <div class="row">
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.salesTargetMonth}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.salesTargetYear}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetMonthPer}}</strong></div> 
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="text-title-size">SALES TARGET(CR.)</div>
+            </div>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
+            <div class="row">
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.salesMM}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetYearPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.salesMM}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetMonthPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="text-title-size">TARGET ACHIEVMENT(%)</div>
+              </div>
+            </div>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
+            <div class="row">
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.targetAchivementMM}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetYearPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-6 ">
+                <div class="number-text"><strong>{{salesData.targetAchivementYY}}</strong></div>
+                <div class="row">
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="text-title-size">SALES LAST YEAR(%)</div>
+              </div>
+            </div>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
+            <div class="row">
+              <div class="col-12">
+                <div class="number-text"><strong>89</strong></div>
+                <div class="number-text-small"><strong>AMOUNT RECEIVABLES(CR.)</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
+            <div class="row">
+              <div class="col-12">
+                <div class="number-text"><strong>40</strong></div>
+                <div class="number-text-small"><strong>OVERDUE RECEIVABLES(CR.)</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
+            <div class="row">
+              <div class="col-12">
+                <div class="number-text"><strong>70</strong></div>
+                <div class="number-text-small"><strong>OVERDUE RECEIVABLES(%)</strong></div>
+              </div>
+            </div>
+          </div>
+         
+  </div>
+  <div class="col-10 mmt-15 ">
+    <div class="col-12 mml-15 ppl-20">
+      <div class="row">
+        <mat-card class="col-8">
+          <div class="row pp-5">
+            <div class="col-4">
+              <mat-card class="inner-mat-card">
+                <div class="row ">
+                  <div class="col-9 card-title-text">MONTHLY SALE (CR.)</div>
+                  <div class="col-3">
+                    <div class="two-tone-card pp-5">
+                      &#8377;
+                    </div>
+                  </div>
+                  <div class="total-monthly-sale-text mmt-5">
+                    &#8377; &nbsp; {{buildCardData.totalGrandTotalSalesYOY}}
+                  </div>
+                  <div class="col-12 row font-size-10 mmt-5">
+                    <div>
+
+                      <strong style="color: green;font-size: 14px;">&uarr;</strong> 
+                      <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
+                      <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;
+                      {{salesData.monthlySalesTotalDesc}}
+                    </div>
+                  </div>
+                </div>
+                <div></div>
+              </mat-card>
+            </div>
+            <div class="col-4">
+              <mat-card class="inner-mat-card">
+                <div class="row ">
+                  <div class="col-9 card-title-text">ORDERS (%)</div>
+                  <div class="col-3">
+                    <!-- <div class="two-tone-card pp-5">
+                      &#8377;
+                    </div> -->
+                  </div>
+                  <!-- <div class="total-monthly-sale-text">
+                    &#8377; &nbsp; {{salesData.monthlySale}}
+                  </div> -->
+                </div>
+                <div></div>
+              </mat-card>
+            </div>
+            <div class="col-4">
+              <mat-card class="inner-mat-card">
+                <div class="row ">
+                  <div class="col-9 card-title-text">INVENTORY (%)</div>
+                  <div class="col-3">
+                    <!-- <div class="two-tone-card pp-5">
+                      &#8377;
+                    </div> -->
+                  </div>
+                  <!-- <div class="total-monthly-sale-text">
+                    &#8377; &nbsp; {{salesData.monthlySale}}
+                  </div> -->
+                </div>
+                <div></div>
+              </mat-card>
+            </div>
+            
+          </div>
+          <div class="col-12">
+            <table mat-table [dataSource]="dataSource" class=" demo-table col-12 font-size-12">
+              <!-- Position Column -->
+              <ng-container matColumnDef="indicator">
+                <th mat-header-cell *matHeaderCellDef class="table-th"> INDICATOR</th>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.position}}</td>
+              </ng-container>
+            
+              <!-- Name Column -->
+              <ng-container matColumnDef="period">
+                <th mat-header-cell *matHeaderCellDef class="table-th">PERIOD</th>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.name}}</td>
+              </ng-container>
+            
+              <!-- Weight Column -->
+              <ng-container matColumnDef="current">
+                <th mat-header-cell *matHeaderCellDef class="table-th">CURRENT</th>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.weight}}</td>
+              </ng-container>
+            
+              <!-- Symbol Column -->
+              <ng-container matColumnDef="previous">
+                <th mat-header-cell *matHeaderCellDef class="table-th">PREVIOUS</th>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.symbol}}</td>
+              </ng-container>
+              <ng-container matColumnDef="change">
+                <th mat-header-cell *matHeaderCellDef class="table-th">CHANGE</th>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.change}}</td>
+              </ng-container>
+            
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns;"
+              ></tr>
+            </table>
+          </div>
+        </mat-card>
+        <div class="col-4 mmt-10">
+          <div class="row">
+            <div class="col-4">
+              <div class="pentagon-card two-tone-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <img src="./../../assets/photos/medle.png" alt="" srcset="" class="medle-alignment">
+                    <p class="top-perfoemance-div">TOP PRODUCT</p>
+                   </div>
+                 </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="pentagon-card two-tone-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <img src="./../../assets/photos/medle.png" alt="" srcset="" class="medle-alignment">
+
+                    <p class="top-perfoemance-div">TOP DIVISION</p>
+                   </div>
+                 </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="pentagon-card two-tone-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <img src="./../../assets/photos/medle.png" alt="" srcset="" class="medle-alignment">
+
+                    <p class="top-perfoemance-div">TOP 5 PERFORMERS</p>
+                   </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mmt-20 mml-15">
+      <div class="row">
+        <div class="col-4 chat-div-alignment pp-10 font-size-10">
+          <div class="chart-title mml-10">
+            Sales Overview - Daily
+          </div>
+          <div class="chart-sub-title mml-10"><strong style="color: green;font-size: 14px;">&uarr;</strong> 
+            <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
+            <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;{{salesData.monthlySalesTotalDesc}} 
+          </div>
+          <div class="chart-div-align">
+            
+            <canvas id="salesOverView" (click)="salesOverViewClick()"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-10 font-size-10">
+          <div class="chart-title">
+            Sales OverView - Monthly
+          </div>
+          <div class="chart-sub-title"><strong style="color: green;font-size: 14px;">&uarr;</strong> 
+            <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
+            <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;increment in 2024 
+          </div>
+          <div class="chart-div-align">
+            <canvas id="myChart1" (click)="salesOverViewMonthlyClick()"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-10 font-size-10">
+          <div class="chart-title">
+            Division Wise- Sales
+          </div>
+          <div class="chart-div-align " style="text-align: center;padding-left: 15%;">
+            <canvas id="myChart2" class="donut-chart-alignment" (click)="divisionwiseSaleFunction()"></canvas>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mmt-30 pp-20 mml-15">
+      <div class="row ">
+        <div class="col-4 chat-div-alignment">
+          <div class="chart-title mml-10 pp-10 mmt-15">
+            Days Invertry Outstanding
+          </div>
+          <div class="chart-div-align">
+            
+            <canvas class="guage-chart" id="gearChart"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-10 font-size-10 mmt-15">
+          <div class="chart-title">
+            Actual Sales Vs Target
+          </div>
+          
+          <div class="chart-div-align">
+            <canvas id="divideChart"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-10 font-size-10 mmt-15">
+          <div class="chart-title">
+            Sales Revenue by Resion <small>in (CR.)</small>
+          </div>
+          <div class="chart-div-align">
+            <canvas id="salesRegionChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mmt-30 pp-20 mml-15">
+      <div class="row ">
+        <div class="col-4 chat-div-alignment pp-10">
+          <div class="chart-title mml-10">
+            Days Receive Outstanding
+          </div>
+          <div class="chart-div-align">
+            
+            <canvas class="guage-chart" id="dayReceiveOutStanding"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-10 font-size-10">
+          <div class="chart-title">
+            Overdue Receivable Ageing
+          </div>
+          <div class="chart-sub-title text-align-center">
+              <div>Total Overdue Receivable &nbsp;&nbsp; 3.175</div>
+              <div>% of Overdue Receivable &nbsp;&nbsp; 30%</div>
+            
+          </div>
+          <div class="chart-div-align">
+            <canvas id="overdueReceiveChart"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-5 font-size-10">
+          <div class="row">
+            <div class="col-6">
+              <div class="chart-title">
+                Top 5 customers by Sales
+              </div>
+              <div class="chart-div-align mmt-30">
+                <canvas id="topFiveCustomerSales" class="top-chart-pie"></canvas>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="chart-title">
+                Top 5 customers by Receivable
+              </div>
+              <div class="chart-div-align mmt-5">
+                <canvas id="topFiveCustomerReceivable" class="top-chart-pie"></canvas>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="col-12 mmt-30 pp-20 mml-15">
+      <div class="row ">
+        <div class="col-4 chat-div-alignment">
+          <div class="chart-title mml-10">
+            Receivable Ageing
+          </div>
+          <div class="chart-sub-title text-align-center">
+            <div>Total Receivable &nbsp;&nbsp; 12000</div>            
+        </div>
+          <div class="chart-div-align">
+            
+            <canvas id="receivableAgeingChart"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-10 font-size-10">
+          <div class="chart-title">
+            Performance
+          </div>
+          
+          <div class="chart-div-align">
+            <canvas id="salesOnCreditChart"></canvas>
+          </div>
+        </div>
+        <div class="col-4 chat-div-alignment pp-5 font-size-10">
+          
+          
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>

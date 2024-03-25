@@ -102,15 +102,15 @@
             <!-- Your card content goes here -->
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.salesYY}}</strong></div>
+                <div class="number-text"><strong>{{totalSales.MoM}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{totalSales.MoMPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{ buildCardData.totalGrandTotalSalesYOY}}</strong></div>
+                <div class="number-text"><strong>{{ totalSales.YoY}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{totalSales.YoYPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
@@ -121,15 +121,15 @@
           <div class="two-tone-card mm-10 white-color" style="background: #8000FF;">
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.salesTargetMonth}}</strong></div>
+                <div class="number-text"><strong>{{salesTarget.MoM}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesTarget.MoMPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.salesTargetYear}}</strong></div>
+                <div class="number-text"><strong>{{salesTarget.YoY}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetMonthPer}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{salesTarget.YoYPct}}</strong></div> 
                 </div>
               </div>
             </div>
@@ -140,15 +140,15 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.salesMM}}</strong></div>
+                <div class="number-text"><strong>{{targetAchievement.MoM}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetYearPer}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.MoMPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.salesMM}}</strong></div>
+                <div class="number-text"><strong>{{targetAchievement.YoY}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetMonthPer}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.YoYPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
@@ -159,15 +159,15 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.targetAchivementMM}}</strong></div>
+                <div class="number-text"><strong>{{salesLastYear.MoM}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.salesTargetYearPer}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesLastYear.MoMPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesData.targetAchivementYY}}</strong></div>
+                <div class="number-text"><strong>{{salesLastYear.YoY}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesData.momPer}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{salesLastYear.YoYPct}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
@@ -178,7 +178,7 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-12">
-                <div class="number-text"><strong>89</strong></div>
+                <div class="number-text"><strong>{{accountReceivables.accountReceivablesVal}}</strong></div>
                 <div class="number-text-small"><strong>AMOUNT RECEIVABLES(CR.)</strong></div>
               </div>
             </div>
@@ -186,7 +186,7 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-12">
-                <div class="number-text"><strong>40</strong></div>
+                <div class="number-text"><strong>{{overdueReceivables.accountReceivablesVal}}</strong></div>
                 <div class="number-text-small"><strong>OVERDUE RECEIVABLES(CR.)</strong></div>
               </div>
             </div>
@@ -194,7 +194,7 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-12">
-                <div class="number-text"><strong>70</strong></div>
+                <div class="number-text"><strong>{{overdueReceivables.overdueReceivablesPct}}</strong></div>
                 <div class="number-text-small"><strong>OVERDUE RECEIVABLES(%)</strong></div>
               </div>
             </div>

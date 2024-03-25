@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SharedAPIService {
-  baseUrl: any = '';
+  baseUrl: any = 'http://127.0.0.1:8000';
   constructor(private httpClient: HttpClient) {
 
    }

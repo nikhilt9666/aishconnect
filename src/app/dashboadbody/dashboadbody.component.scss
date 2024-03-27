@@ -146,11 +146,44 @@ height: 250px
   font-size: 12px;
 }
 .top-chart-pie{
-  height: 187.333px !important;
-  width: 187.167px !important;
+  height: 166.333px !important;
+  width: 166.167px !important;
 }
 .guage-chart{
   width: 310px !important;
   height: 310px !important;
 }
+ul {
+  list-style-type: none;
+  padding-left: 5px !important;
+}
+li{
+  font-size: 10px;
+    overflow: hidden;
+    height: 14px;
+}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
 
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

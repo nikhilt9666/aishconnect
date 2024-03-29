@@ -26,7 +26,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { DailyCahrtPopupComponent } from './sales-overview-daily/daily-cahrt-popup/daily-cahrt-popup.component';
 import { ZoneWiseSaleComponent } from './zone-wise-sale/zone-wise-sale.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +57,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
     MatTableModule,
     MatDialogModule,
     HttpClientModule,
+    MatTooltipModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent },
       { path: 'sales-overview-daily', component: SalesOverviewDailyComponent },

@@ -314,7 +314,7 @@
                     
                     <ul>
                       <li *ngFor="let item of topProducts" >
-                        {{ item.company }}
+                       <div matTooltip="{{item.company}} : {{item.score}}">{{ item.company }}</div> 
                       </li>
                     </ul>
                    </div>
@@ -330,7 +330,7 @@
                     <p class="top-perfoemance-div">TOP DIVISION</p>
                     <ul>
                       <li *ngFor="let item of topDivisions" >
-                        {{ item.company }}
+                       <div matTooltip="{{item.company}} : {{item.score}}">{{ item.company }}</div> 
                       </li>
                     </ul>
                     
@@ -347,7 +347,7 @@
                     <p class="top-perfoemance-div">TOP 5 PERFORMERS</p>
                     <ul>
                       <li *ngFor="let item of top5Performers" >
-                        {{ item.company }}
+                       <div matTooltip="{{item.company}} : {{item.score}}"> {{ item.company }}</div>
                       </li>
                     </ul>
                    </div>

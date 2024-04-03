@@ -64,8 +64,8 @@
   </div>
   
 </div> -->
-
-<div class="row col-12 pp-5">
+<span class="loader" *ngIf="LoadData"></span>
+<div class="row col-12 pp-5" [ngClass]="{'loaderClass': LoadData}">
   <div class="col-2 pp-5">
       
           <div class="two-tone-card mm-10">

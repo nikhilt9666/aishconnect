@@ -421,6 +421,7 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
   topDivisions :any ={};
   top5Performers :any ={};
   dummyData:any ={};
+  LoadData: boolean = true;
   indicator:any =[{'indicatorName': 'Monthly Sale', 'period': 'Apr (this month) vs Mar (last month)', 'currentMonthSales': {}, 'previousMonthSales': {'invoiceMonth': 'Mar', 'invoiceYear': '2024', 'grandTotal': 24908534.0}, 'rateChange': -100.0}];
   responceDataFunction() {    
       const getUrl = '/sales-data';
@@ -445,7 +446,7 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
         this.dummyData = Object.entries(this.top5Performers).map(([company, score]) => ({ company, score }));
         this.top5Performers= this.dummyData
         this.indicator= this.responceData.indicator;
-
+        this.LoadData= false;
         this.salesOverviewDayly();
    
         this.salesOverViewMonthlyFunction();

@@ -25,6 +25,7 @@
     "chart.js": "^3.3.5",
     "chartjs-plugin-datalabels": "^2.2.0",
     "chartjs-plugin-doughnutlabel-v3": "^1.2.0",
+    "cors": "^2.8.5",
     "fusioncharts": "^3.21.1",
     "jquery": "^3.7.1",
     "rxjs": "~7.5.0",

@@ -5,18 +5,22 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class SharedAPIService {
-  baseUrl: any = 'http://127.0.0.1:8000';
+  baseUrl: any = 'http://103.151.107.153:8000';
   constructor(private httpClient: HttpClient) {
 
    }
 
-   getAllData(url:any){
+   getAllData(){
+    let url='/customer-ageing-data';
     const getDataurl = this.baseUrl+url;
       return this.httpClient.get(getDataurl);
    }
    getSpecificData(url:any, payload:any){
-     return this.httpClient.post(url,payload);
+
+    const getDataurl = this.baseUrl+url;
+     return this.httpClient.post(getDataurl,payload);
    }
+   
 
   
 }

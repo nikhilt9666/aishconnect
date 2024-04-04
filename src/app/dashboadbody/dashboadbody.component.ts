@@ -115,8 +115,10 @@ getMonthName(month:any) {
     const lastSevenKeys = keys.reverse();
     const values = Object.values(result);
     const lastSevenValues:any = values.reverse();
-    let maxNo =  Math.max.apply(Math, lastSevenValues);
+    
     console.log(lastSevenValues);
+    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/100).toFixed(2)));
+    let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
     console.log('lastSevenKeys: - ',lastSevenKeys);
     console.log('decemberData: - ',decemberData);
     new Chart('salesOverView', {
@@ -127,7 +129,7 @@ getMonthName(month:any) {
           label: 'Profit in L',
           borderColor:'#e263e5',
           backgroundColor:'#e263e5',
-          data: lastSevenValues,
+          data: lastSevenValuesFloat,
           borderWidth: 1,
           barThickness:18
         }]
@@ -164,7 +166,7 @@ getMonthName(month:any) {
             align: 'end',
             formatter: function (value, context) {
               // Display the actual data value
-              return value+' L';
+              return value+' Cr';
           }
             // display:false
           },
@@ -195,7 +197,7 @@ console.log('invoicesByMonth: - ',invoicesByMonth);
 this.monthwaiseData = invoicesByMonth;
 console.log('this.monthwaiseData: - ',this.monthwaiseData);
 let totalGrandTotal = this.responceData.salesData.reduce((total:any, invoice:any) => total + parseFloat(invoice.grandTotal), 0);
-this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
+this.buildCardData.totalGrandTotalSalesYOY = this.indicator[0].currentMonthSales?.grandTotal ? this.indicator[0].currentMonthSales?.grandTotal : '';
     for (let month in this.monthwaiseData) {
       console.log(`\n${month}:`);
     //   console.log('Invoices:', invoicesByMonth[month].invoices);
@@ -203,7 +205,7 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
     }
    
 
-    const currentYear:any = new Date().getFullYear();
+    const currentYear:any = 2024;
     const sumByMonth:any = {};
 
     // Loop through invoices
@@ -223,7 +225,7 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
             sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal);
         }
     });
-
+    console.log('sumByMonth: - ',sumByMonth);
     // Create an array of objects containing month/year in "mmm/yyyy" format and sum of grandTotal
     const resultArray2024 = Object.entries(sumByMonth).map(([monthYear, sum]) => ({
         monthYear: monthYear,
@@ -234,7 +236,6 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
       "Jan", "Feb", "Mar", "Apr", "May", "Jun",
       "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
-  
   // Sort the array based on month order
   resultArray2024.sort((a:any, b:any) => {
       const monthA = monthNames2024.indexOf(a.monthYear);
@@ -242,9 +243,10 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
       return monthA - monthB;
   });
   const monthYears2024 = resultArray2024.map(obj => obj.monthYear);
-  const monthYears2024value = resultArray2024.map(obj => obj.sum);
-
+  const monthYears2024value = resultArray2024.map((obj:any) => (obj.sum/100).toFixed(2));
+  let newArray2024value = monthYears2024value.map((element:any,index:any) => index <= 2 ? element:0);
   console.log('monthYears2024',monthYears2024);
+  console.log('newArray',newArray2024value);
     const targetYear = 2023;
     const sumByMonth2023:any = {};
 
@@ -289,19 +291,19 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
       return monthA - monthB;
   });
   const monthYears2023 = resultArray2023.map(obj => obj.monthYear);
-  const monthYears2023value = resultArray2023.map(obj => obj.sum);
+  const monthYears2023value = resultArray2023.map((obj:any) => (obj.sum/100).toFixed(2));
 
   console.log('monthYears2023',monthYears2023);
-  const labelData = monthYears2023.concat(monthYears2024);
-  for (let i = 0; i < monthYears2023.length; i++) {
-    monthYears2024value.unshift(0); // Add 0 to the beginning of the array
-  }
-  for (let i = 0; i < monthYears2024.length; i++) {
-    monthYears2023value.push(0); // Add 0 to the beginning of the array
-  }
+  // const labelData = monthYears2023.concat(monthYears2024);
+  // for (let i = 0; i < monthYears2023.length; i++) {
+  //   monthYears2024value.unshift(0); // Add 0 to the beginning of the array
+  // }
+  // for (let i = 0; i < monthYears2024.length; i++) {
+  //   monthYears2023value.unshift(0); // Add 0 to the beginning of the array
+  // }
     var data = {
       
-      labels: labelData,
+      labels: monthYears2023,
       datasets: [
         {
           label: '2023',
@@ -314,7 +316,7 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
         },
         {
           label: '2024',
-          data: monthYears2024value,
+          data: newArray2024value,
           backgroundColor: 'rgba(75,10,125,.5)',
           borderColor: '#C430B6',
           fill: true,
@@ -556,7 +558,7 @@ this.responceData.salesData.forEach((invoice:any) => {
 let dataTotaldivision: any = []
 for (let division in divisionWiseSales) {
 
-  dataTotaldivision.push(divisionWiseSales[division].totalGrandTotal.toFixed(2));
+  dataTotaldivision.push((divisionWiseSales[division].totalGrandTotal/100).toFixed(2));
 }
 // Print the result
     const data1 = {
@@ -571,16 +573,49 @@ for (let division in divisionWiseSales) {
           'rgb(252, 110, 255)',
           'rgb(173, 105, 255)',
         ],
-        hoverOffset: 4
+        hoverOffset: 4,
+        offset:5,
       }]
     };
-    
+    const customDataLable = {
+      id:'customDataLable',
+      afterDatasetsDraw(chart:any,args:any,pluginOptions:any){
+        const {ctx, data, chartArea:{top, bottom, left,right,width,height}} = chart;
+        ctx.save();
+        const halfWidth = width/2 +left;
+        const halfHeight = height/2 +top;
+        data.datasets[0].data.forEach((datapoint:any,index:any)=>{
+          const {x,y} = chart.getDatasetMeta[0].data[index].tooltipPosition();
+          ctx.font = 'bold 12px sans-serif';
+          ctx.fillStyle = data.datasets[0].borderColor[index];
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          if(datapoint>=3){
+            ctx.fillText(datapoint,x,y);
+          }
+          else{
+            const xLine = x>=halfWidth ? x+15:x-15;
+            const yLine = y>=halfHeight ? y+15:y-15;
+            const extraLine = x>=halfWidth ? 15:-15;
+            ctx.stockStyle = data.datasets[0].borderColor[index];
+            ctx.beginPath();
+            ctx.moveTo(x,y);
+            ctx.lineTo(xLine+extraLine,yLine);
+            ctx.stroke();
+            ctx.fillText(datapoint,xLine+extraLine,yLine);
+
+          }
+        })
+      }
+    }
     const config = new Chart('myChart2',{
       type: 'doughnut',
       data: data1,
       // plugins: [ChartDataLabels],
       options: {
-        
+        layout:{
+          padding:30
+        },
       
         plugins: 
         {
@@ -613,7 +648,8 @@ for (let division in divisionWiseSales) {
         }
           
         }
-      }
+      },
+      // plugins:[customDataLable]
     });
   }
   salesOnCreditChartFunction() {

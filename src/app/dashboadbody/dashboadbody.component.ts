@@ -493,6 +493,7 @@ this.buildCardData.totalGrandTotalSalesYOY = totalGrandTotal.toFixed(2);
                         };
 this.topProducts= this.responceData.topProducts;
 this.topDivisions= this.responceData.topDivisions;
+this.LoadData= false;
 this.top5Performers = {
                             "E0514": 119340143.56,
                             "E0105": 9807170.0,

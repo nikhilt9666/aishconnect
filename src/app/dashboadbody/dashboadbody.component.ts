@@ -126,7 +126,7 @@ getMonthName(month:any) {
       data: {
         labels: lastSevenKeys,
         datasets: [{
-          label: 'Profit in L',
+          label: 'Profit in Cr',
           borderColor:'#e263e5',
           backgroundColor:'#e263e5',
           data: lastSevenValuesFloat,
@@ -197,7 +197,8 @@ console.log('invoicesByMonth: - ',invoicesByMonth);
 this.monthwaiseData = invoicesByMonth;
 console.log('this.monthwaiseData: - ',this.monthwaiseData);
 let totalGrandTotal = this.responceData.salesData.reduce((total:any, invoice:any) => total + parseFloat(invoice.grandTotal), 0);
-this.buildCardData.totalGrandTotalSalesYOY = this.indicator[0].currentMonthSales?.grandTotal ? this.indicator[0].currentMonthSales?.grandTotal : '';
+this.buildCardData.totalGrandTotalSalesYOY = this.indicator[0].currentMonthSales?.grandTotal ? this.indicator[0].currentMonthSales?.grandTotal : 0;
+this.buildCardData.monthlySalesDesc =  0;
     for (let month in this.monthwaiseData) {
       console.log(`\n${month}:`);
     //   console.log('Invoices:', invoicesByMonth[month].invoices);
@@ -564,7 +565,7 @@ for (let division in divisionWiseSales) {
     const data1 = {
       labels: Object.keys(divisionWiseSales),
       datasets: [{
-        label: '50%',
+        label: '10%',
         data: dataTotaldivision,
         backgroundColor: [
           'rgb(130, 110, 255)',
@@ -577,37 +578,37 @@ for (let division in divisionWiseSales) {
         offset:5,
       }]
     };
-    const customDataLable = {
-      id:'customDataLable',
-      afterDatasetsDraw(chart:any,args:any,pluginOptions:any){
-        const {ctx, data, chartArea:{top, bottom, left,right,width,height}} = chart;
-        ctx.save();
-        const halfWidth = width/2 +left;
-        const halfHeight = height/2 +top;
-        data.datasets[0].data.forEach((datapoint:any,index:any)=>{
-          const {x,y} = chart.getDatasetMeta[0].data[index].tooltipPosition();
-          ctx.font = 'bold 12px sans-serif';
-          ctx.fillStyle = data.datasets[0].borderColor[index];
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          if(datapoint>=3){
-            ctx.fillText(datapoint,x,y);
-          }
-          else{
-            const xLine = x>=halfWidth ? x+15:x-15;
-            const yLine = y>=halfHeight ? y+15:y-15;
-            const extraLine = x>=halfWidth ? 15:-15;
-            ctx.stockStyle = data.datasets[0].borderColor[index];
-            ctx.beginPath();
-            ctx.moveTo(x,y);
-            ctx.lineTo(xLine+extraLine,yLine);
-            ctx.stroke();
-            ctx.fillText(datapoint,xLine+extraLine,yLine);
+    // const customDataLable = {
+    //   id:'customDataLable',
+    //   afterDatasetsDraw(chart:any,args:any,pluginOptions:any){
+    //     const {ctx, data, chartArea:{top, bottom, left,right,width,height}} = chart;
+    //     ctx.save();
+    //     const halfWidth = width/2 +left;
+    //     const halfHeight = height/2 +top;
+    //     data.datasets[0].data.forEach((datapoint:any,index:any)=>{
+    //       const {x,y} = chart.getDatasetMeta[0].data[index].tooltipPosition();
+    //       ctx.font = 'bold 12px sans-serif';
+    //       ctx.fillStyle = data.datasets[0].borderColor[index];
+    //       ctx.textAlign = 'center';
+    //       ctx.textBaseline = 'middle';
+    //       if(datapoint>=3){
+    //         ctx.fillText(datapoint,x,y);
+    //       }
+    //       else{
+    //         const xLine = x>=halfWidth ? x+15:x-15;
+    //         const yLine = y>=halfHeight ? y+15:y-15;
+    //         const extraLine = x>=halfWidth ? 15:-15;
+    //         ctx.stockStyle = data.datasets[0].borderColor[index];
+    //         ctx.beginPath();
+    //         ctx.moveTo(x,y);
+    //         ctx.lineTo(xLine+extraLine,yLine);
+    //         ctx.stroke();
+    //         ctx.fillText(datapoint,xLine+extraLine,yLine);
 
-          }
-        })
-      }
-    }
+    //       }
+    //     })
+    //   }
+    // }
     const config = new Chart('myChart2',{
       type: 'doughnut',
       data: data1,
@@ -634,7 +635,7 @@ for (let division in divisionWiseSales) {
          doughnutLabel: {
           labels: [
             {
-              text: '300', //Chart.dataset.data.reduce((e,i)=> +:e, 0),
+              // text: '300', //Chart.dataset.data.reduce((e,i)=> +:e, 0),
               font: {
                 // size: '30',
                 // units: 'em',
@@ -652,22 +653,7 @@ for (let division in divisionWiseSales) {
       // plugins:[customDataLable]
     });
   }
-  salesOnCreditChartFunction() {
-    const data = {
-      labels: ['A','B','C','D'],
-      datasets: [{
-        label: 'My First Dataset',
-        data: [65, 59, 80, 81, 56, 55, 40],
-        fill: false,
-        borderColor: '#D90000',
-        tension: 0.1
-      }]
-    };
-    const config = new Chart('',{
-      type: 'line',
-      data: data,
-    });
-  }
+
   receivableAgeingChartFunction() {
     const intervals: any = {
       '< 30 days': [],

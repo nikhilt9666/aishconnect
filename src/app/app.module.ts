@@ -27,6 +27,7 @@ import { DailyCahrtPopupComponent } from './sales-overview-daily/daily-cahrt-pop
 import { ZoneWiseSaleComponent } from './zone-wise-sale/zone-wise-sale.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     SalesOverviewDailyComponent,
     SalesOverviewMonthlyComponent,
     DailyCahrtPopupComponent,
-    ZoneWiseSaleComponent
+    ZoneWiseSaleComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
       { path: 'sales-overview-daily', component: SalesOverviewDailyComponent },
       { path: 'sales-overview-monthly', component: SalesOverviewMonthlyComponent },
       { path: 'division-wise-sale', component: ZoneWiseSaleComponent },
+      { path: 'upload-file', component: UploadFileComponent },
     ])
   ],
   providers: [HttpClientModule],

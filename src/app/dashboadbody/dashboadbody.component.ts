@@ -14,6 +14,7 @@ import DoughnutLabel from 'chartjs-plugin-doughnutlabel-v3';
   styleUrls: ['./dashboadbody.component.scss']
 })
 export class DashboadbodyComponent implements OnInit {
+  dailyChart: any;
 
   constructor(private router: Router,private sharedService: SharedAPIService) { 
     Chart.register(...registerables,
@@ -50,6 +51,7 @@ export class DashboadbodyComponent implements OnInit {
   AgeingResponceData : any = {};
   monthwaiseData:any =[];
   buildCardData:any = {};
+  tempLast7Days: any;
   ngOnInit(): void {
     this.responceDataFunction();
     
@@ -60,7 +62,68 @@ getSumForDate(date:any) {
       .filter((invoice:any) => invoice.invoiceDate === date)
       .reduce((sum:any, invoice:any) => sum + parseFloat(invoice.grandTotal), 0);
 }
+leftButtonClicked() {
+  let todaysdate = this.tempLast7Days[6].date;
+  let samllestdate = this.tempLast7Days[0].date;
+  this.tempLast7Days.forEach((element: any) => {
+    const currentdate = element.date;
+    if (currentdate < samllestdate)
+      samllestdate = currentdate;
+  });
+  todaysdate = samllestdate;
+  console.log("left button clicked");
+  console.log(this.tempLast7Days);
+  const parts = todaysdate.split('-');
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[0],10);
+  const year = parseInt(parts[2], 10);
+  const today =  new Date(year, month, day);
+  const last7Days = [];
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+        const sum = this.getSumForDate(formattedDate);
+        last7Days.push({ date: formattedDate, sum: sum });
+    }
+    this.tempLast7Days = last7Days; 
+    console.log("after");
+    console.log(this.tempLast7Days);
+    this.prepareDailyChart(this.tempLast7Days,true);
 
+}
+rightButtonClicked() {
+  console.log("right button clicked");
+  let todaysdate = this.tempLast7Days[6].date;
+  let biggestdate = this.tempLast7Days[0].date;
+  this.tempLast7Days.forEach((element: any) => {
+    const currentdate = element.date;
+    if (currentdate > biggestdate)
+    biggestdate = currentdate;
+  });
+  todaysdate = biggestdate;
+  
+  // console.log("left button clicked");
+  console.log(this.tempLast7Days);
+  const parts = todaysdate.split('-');
+  const month = parseInt(parts[1], 10)-1;
+  const day = parseInt(parts[0],10);
+  const year = parseInt(parts[2], 10);
+  const today =  new Date(year, month, day);
+  
+  const last7Days = [];
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+        const sum = this.getSumForDate(formattedDate);
+        last7Days.push({ date: formattedDate, sum: sum });
+    }
+    this.tempLast7Days = last7Days; 
+    console.log("after");
+    console.log(this.tempLast7Days);
+    this.prepareDailyChart(this.tempLast7Days,true);
+}
 getLast7DaysData(data:any) {
   const today = new Date();
     const last7Days = [];
@@ -71,6 +134,7 @@ getLast7DaysData(data:any) {
         const sum = this.getSumForDate(formattedDate);
         last7Days.push({ date: formattedDate, sum: sum });
     }
+    this.tempLast7Days = last7Days;
     return last7Days;
 }
 getMonthName(month:any) {
@@ -81,6 +145,7 @@ getMonthName(month:any) {
     const decemberData:any = {};
     const last7DaysData = this.getLast7DaysData(this.responceData.salesData);
     console.log('last7DaysData',last7DaysData);
+    this.prepareDailyChart(last7DaysData,false);
     // Loop through the invoices
     // this.responceData.forEach((invoice:any) => {
     //     // Parse the invoice date
@@ -104,6 +169,9 @@ getMonthName(month:any) {
     //     }
     // });
     // const lastSevenData = decemberData.slice(-7);
+    
+  }
+  prepareDailyChart(last7DaysData:any,status:boolean){
     const result:any = {};
 
 // Loop through the data array and populate the result object
@@ -121,60 +189,67 @@ getMonthName(month:any) {
     const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(2)));
     let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
     console.log('lastSevenKeys: - ',lastSevenKeys);
-    console.log('decemberData: - ',decemberData);
-    new Chart('salesOverView', {
-      type: 'bar',
-      data: {
-        labels: lastSevenKeys,
-        datasets: [{
-          label: 'Profit in L',
-          borderColor:'#e263e5',
-          backgroundColor:'#e263e5',
-          data: lastSevenValuesFloat,
-          borderWidth: 1,
-          barThickness:18
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          
-            x: {
-               grid: {
-                  display: false
-               }
-            },
-            y: {
-               grid: {
-                  display: true,
-                  
-               },
-               suggestedMax:maxNo+5
-            
-            
-         },
-         
+    // console.log('decemberData: - ',decemberData);
+    if(!status){
+
+      this.dailyChart = new Chart('salesOverView', {
+        type: 'bar',
+        data: {
+          labels: lastSevenKeys,
+          datasets: [{
+            label: 'Profit in L',
+            borderColor:'#e263e5',
+            backgroundColor:'#e263e5',
+            data: lastSevenValuesFloat,
+            borderWidth: 1,
+            barThickness:18
+          }]
         },
-        plugins: {
-          legend: {
-            display: false,
-         } ,
-          // Change options for ALL labels of THIS CHART
-          datalabels: {
-            // color: '#36A2EB',
-            anchor: 'end',
-            align: 'end',
-            formatter: function (value, context) {
-              // Display the actual data value
-              return value+' Cr';
-          }
-            // display:false
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            
+              x: {
+                 grid: {
+                    display: false
+                 }
+              },
+              y: {
+                 grid: {
+                    display: true,
+                    
+                 },
+                 suggestedMax:maxNo+5  
+              
+           },
+           
           },
-        
-        },
-      }
-    });
+          plugins: {
+            legend: {
+              display: false,
+           } ,
+            // Change options for ALL labels of THIS CHART
+            datalabels: {
+              // color: '#36A2EB',
+              anchor: 'end',
+              align: 'end',
+              formatter: function (value, context) {
+                // Display the actual data value
+                return value+' L';
+            }
+              // display:false
+            },
+          
+          },
+        }
+      });
+    }
+    else{
+      this.dailyChart.data.labels = lastSevenKeys;
+      this.dailyChart.data.datasets[0].data = lastSevenValuesFloat;
+      this.dailyChart.update();
+    }
   }
   buildCardDataFunction() {
     throw new Error('Method not implemented.');
@@ -611,6 +686,22 @@ for (let division in divisionWiseSales) {
         })
       }
     }
+    const doughnutLabel = {
+      id : 'doughnutLabel',
+      beforeDatasetsDraw(chart:any,args:any,pluginOptions:any){
+        const {ctx,data} = chart;
+        ctx.save();
+        const xCoor = chart.getDatasetMeta(0).data[0].x;
+        const yCoor = chart.getDatasetMeta(0).data[0].y;
+        ctx.font = 'bold 30px sans-sarif';
+        ctx.fillStyle = '#359BB4';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        // `${data.labels[0]}: ${data.datasets[0]}`
+        ctx.fillText('96%',xCoor,yCoor);
+  
+      }
+     }
     const config = new Chart('myChart2',{
       type: 'doughnut',
       data: data1,
@@ -652,7 +743,7 @@ for (let division in divisionWiseSales) {
           
         }
       },
-      // plugins:[customDataLable]
+      plugins:[doughnutLabel]
     });
   }
 
@@ -833,9 +924,9 @@ const values = Object.values(dataObj);
             }
         },
         plugins: {
-          // legend: {
-          //   display: false
-          // },
+          legend: {
+            display: false
+          },
           // Change options for ALL labels of THIS CHART
           // datalabels: {
           //   display:false
@@ -851,7 +942,7 @@ const values = Object.values(dataObj);
           
         }
       },
-      plugins: [doughnutLabel]
+      // plugins: [doughnutLabel]
     });
   }
   overdueReceiveChartFunction() {

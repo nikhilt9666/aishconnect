@@ -1,0 +1,18 @@
+<!-- <p>upload-file works!</p> -->
+<div class="col-12">
+
+    <div class="col-12">
+        <app-header></app-header>
+      </div>
+    <div class="col-12">
+        <div class="container">
+            <h1>File Upload</h1>
+            <form action="#" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" id="file" class="inputfile" (change)="onFileSelected($event)" />
+                <label for="file" id="fileLabel">Choose a file</label> &nbsp;&nbsp;
+                <button type="button" id="uploadButton" (click)="uploadFile()">Upload</button>
+            </form>
+        </div>
+    
+    </div>
+</div>

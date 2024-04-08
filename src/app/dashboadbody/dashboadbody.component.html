@@ -102,15 +102,15 @@
             <!-- Your card content goes here -->
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{totalSales.MoM}}</strong></div>
+                <div class="number-text"><strong>{{totalSales.MoM/1000000 | number:'1.2-2' }}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{totalSales.MoMPct}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{totalSales.MoMPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{ totalSales.YoY}}</strong></div>
+                <div class="number-text"><strong>{{ totalSales.YoY/1000000 | number:'1.2-2'}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{totalSales.YoYPct}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{totalSales.YoYPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
@@ -121,15 +121,15 @@
           <div class="two-tone-card mm-10 white-color" style="background: #8000FF;">
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesTarget.MoM}}</strong></div>
+                <div class="number-text"><strong>{{salesTarget.MoM | number:'1.2-2'}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesTarget.MoMPct}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesTarget.MoMPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesTarget.YoY}}</strong></div>
+                <div class="number-text"><strong>{{salesTarget.YoY | number:'1.2-2'}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{salesTarget.YoYPct}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{salesTarget.YoYPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
             </div>
@@ -142,13 +142,13 @@
               <div class="col-6 ">
                 <div class="number-text"><strong>{{targetAchievement.MoM}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.MoMPct}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.MoMPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
                 <div class="number-text"><strong>{{targetAchievement.YoY}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.YoYPct}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.YoYPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
@@ -159,15 +159,15 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesLastYear.MoM}}</strong></div>
+                <div class="number-text"><strong>{{salesLastYear.MoM /1000000 | number:'1.2-2'}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesLastYear.MoMPct}}</strong></div> 
+                  <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{salesLastYear.MoMPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{salesLastYear.YoY}}</strong></div>
+                <div class="number-text"><strong>{{salesLastYear.YoY /1000000 | number:'1.2-2'}}</strong></div>
                 <div class="row">
-                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{salesLastYear.YoYPct}}</strong></div> 
+                  <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{salesLastYear.YoYPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
@@ -178,7 +178,7 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-12">
-                <div class="number-text"><strong>{{accountReceivables.accountReceivablesVal}}</strong></div>
+                <div class="number-text"><strong>{{accountReceivables.accountReceivablesVal/1000000 | number:'1.2-2'}}</strong></div>
                 <div class="number-text-small"><strong>AMOUNT RECEIVABLES(CR.)</strong></div>
               </div>
             </div>
@@ -216,7 +216,7 @@
                     </div>
                   </div>
                   <div class="total-monthly-sale-text mmt-5">
-                    &#8377; &nbsp; {{buildCardData.totalGrandTotalSalesYOY}}
+                    &#8377; &nbsp; {{buildCardData.totalGrandTotalSalesYOY /1000000 | number:'1.2-2'}}
                   </div>
                   <div class="col-12 row font-size-10 mmt-5">
                     <div>
@@ -283,17 +283,17 @@
               <!-- Weight Column -->
               <ng-container matColumnDef="current">
                 <th mat-header-cell *matHeaderCellDef class="table-th">CURRENT</th>
-                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.currentMonthSales?.grandTotal}}</td>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.currentMonthSales?.grandTotal /1000000 | number:'1.2-2'}}</td>
               </ng-container>
             
               <!-- Symbol Column -->
               <ng-container matColumnDef="previous">
                 <th mat-header-cell *matHeaderCellDef class="table-th">PREVIOUS</th>
-                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.previousMonthSales.grandTotal}}</td>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.previousMonthSales.grandTotal /1000000 | number:'1.2-2'}}</td>
               </ng-container>
               <ng-container matColumnDef="change">
                 <th mat-header-cell *matHeaderCellDef class="table-th">CHANGE</th>
-                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.rateChange}}</td>
+                <td mat-cell *matCellDef="let element" class="font-size-12">{{element.rateChange | number:'1.2-2'}}</td>
               </ng-container>
             
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -365,14 +365,21 @@
           <div class="chart-title mml-10">
             Sales Overview - Daily
           </div>
+          
           <div class="chart-sub-title mml-10"><strong style="color: green;font-size: 14px;">&uarr;</strong> 
             <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
             <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;{{salesData.monthlySalesTotalDesc}} 
+          </div>
+          <div class="row" style="margin-left: 10px;">
+
+            <button (click)="leftButtonClicked()" class="round-button col-3"> <mat-icon>keyboard_arrow_left</mat-icon></button> 
+            <button (click)="rightButtonClicked()" class="round-button col-3"> <mat-icon>keyboard_arrow_right</mat-icon></button>
           </div>
           <div class="chart-div-align">
             
             <canvas id="salesOverView" (click)="salesOverViewClick()"></canvas>
           </div>
+        
         </div>
         <div class="col-4 chat-div-alignment pp-10 font-size-10">
           <div class="chart-title">

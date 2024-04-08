@@ -18,10 +18,14 @@
         </mat-drawer>      
       </mat-drawer-container> -->
       <nav class="nav-div-align">
-        <span class="headline">AishConnect</span> &nbsp; &nbsp;
+        <span class="headline" (click)="backToHome()" style="cursor: pointer;">AishConnect</span> &nbsp; &nbsp;
         <input type="text" class="search-input" placeholder="Search...">
         <!-- Add more navigation links as needed -->
         <div class="float-right">
           <img src="./../../assets/photos/avtar-1.jpg" alt="Avatar" class="avatar"> &nbsp;&nbsp; John 
+        </div>
+        <div class="float-right upload-div">
+
+          <div (click)="uploadfile()" style="cursor: pointer;">Upload File</div>
         </div>
     </nav>

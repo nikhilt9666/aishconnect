@@ -6,6 +6,7 @@ import { SharedAPIService} from './../shareServices/shared-api.service';
 import 'chartjs-plugin-doughnutlabel-v3';
 import 'chartjs-plugin-datalabels';
 import { AnyObject } from 'chart.js/types/basic';
+import DoughnutLabel from 'chartjs-plugin-doughnutlabel-v3';
 
 @Component({
   selector: 'app-dashboadbody',
@@ -117,7 +118,7 @@ getMonthName(month:any) {
     const lastSevenValues:any = values.reverse();
     
     console.log(lastSevenValues);
-    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/100).toFixed(2)));
+    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(2)));
     let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
     console.log('lastSevenKeys: - ',lastSevenKeys);
     console.log('decemberData: - ',decemberData);
@@ -126,7 +127,7 @@ getMonthName(month:any) {
       data: {
         labels: lastSevenKeys,
         datasets: [{
-          label: 'Profit in Cr',
+          label: 'Profit in L',
           borderColor:'#e263e5',
           backgroundColor:'#e263e5',
           data: lastSevenValuesFloat,
@@ -437,6 +438,7 @@ this.buildCardData.monthlySalesDesc =  0;
         console.log('responceData: -',responceData);
         this.responceData = responceData;
         this.totalSales= this.responceData.totalSales;
+
         this.salesTarget= this.responceData.salesTarget;
         this.targetAchievement= this.responceData.targetAchievement;
         this.salesLastYear= this.responceData.salesLastYear;
@@ -578,37 +580,37 @@ for (let division in divisionWiseSales) {
         offset:5,
       }]
     };
-    // const customDataLable = {
-    //   id:'customDataLable',
-    //   afterDatasetsDraw(chart:any,args:any,pluginOptions:any){
-    //     const {ctx, data, chartArea:{top, bottom, left,right,width,height}} = chart;
-    //     ctx.save();
-    //     const halfWidth = width/2 +left;
-    //     const halfHeight = height/2 +top;
-    //     data.datasets[0].data.forEach((datapoint:any,index:any)=>{
-    //       const {x,y} = chart.getDatasetMeta[0].data[index].tooltipPosition();
-    //       ctx.font = 'bold 12px sans-serif';
-    //       ctx.fillStyle = data.datasets[0].borderColor[index];
-    //       ctx.textAlign = 'center';
-    //       ctx.textBaseline = 'middle';
-    //       if(datapoint>=3){
-    //         ctx.fillText(datapoint,x,y);
-    //       }
-    //       else{
-    //         const xLine = x>=halfWidth ? x+15:x-15;
-    //         const yLine = y>=halfHeight ? y+15:y-15;
-    //         const extraLine = x>=halfWidth ? 15:-15;
-    //         ctx.stockStyle = data.datasets[0].borderColor[index];
-    //         ctx.beginPath();
-    //         ctx.moveTo(x,y);
-    //         ctx.lineTo(xLine+extraLine,yLine);
-    //         ctx.stroke();
-    //         ctx.fillText(datapoint,xLine+extraLine,yLine);
+    const customDataLable = {
+      id:'customDataLable',
+      afterDatasetsDraw(chart:any,args:any,pluginOptions:any){
+        const {ctx, data, chartArea:{top, bottom, left,right,width,height}} = chart;
+        ctx.save();
+        const halfWidth = width/2 +left;
+        const halfHeight = height/2 +top;
+        data.datasets[0].data.forEach((datapoint:any,index:any)=>{
+          const {x,y} = chart.getDatasetMeta[0].data[index].tooltipPosition();
+          ctx.font = 'bold 12px sans-serif';
+          ctx.fillStyle = data.datasets[0].borderColor[index];
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          if(datapoint>=3){
+            ctx.fillText(datapoint,x,y);
+          }
+          else{
+            const xLine = x>=halfWidth ? x+15:x-15;
+            const yLine = y>=halfHeight ? y+15:y-15;
+            const extraLine = x>=halfWidth ? 15:-15;
+            ctx.stockStyle = data.datasets[0].borderColor[index];
+            ctx.beginPath();
+            ctx.moveTo(x,y);
+            ctx.lineTo(xLine+extraLine,yLine);
+            ctx.stroke();
+            ctx.fillText(datapoint,xLine+extraLine,yLine);
 
-    //       }
-    //     })
-    //   }
-    // }
+          }
+        })
+      }
+    }
     const config = new Chart('myChart2',{
       type: 'doughnut',
       data: data1,
@@ -805,15 +807,35 @@ const values = Object.values(dataObj);
         hoverOffset: 3
       }]
     };
-   
+   const doughnutLabel = {
+    id : 'doughnutLabel',
+    beforeDatasetsDraw(chart:any,args:any,pluginOptions:any){
+      const {ctx,data} = chart;
+      ctx.save();
+      const xCoor = chart.getDatasetMeta(0).data[0].x;
+      const yCoor = chart.getDatasetMeta(0).data[0].y;
+      ctx.font = 'bold 30px sans-sarif';
+      ctx.fillStyle = 'red';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      // `${data.labels[0]}: ${data.datasets[0]}`
+      ctx.fillText('Test',xCoor,yCoor);
+
+    }
+   }
     const config1 = new Chart('topFiveCustomerReceivable',{
       type: 'doughnut',
       data: data1,
       options: {
+        elements: {
+            arc: {
+                borderWidth: 0
+            }
+        },
         plugins: {
-          legend: {
-            display: false
-          },
+          // legend: {
+          //   display: false
+          // },
           // Change options for ALL labels of THIS CHART
           // datalabels: {
           //   display:false
@@ -828,7 +850,8 @@ const values = Object.values(dataObj);
           },
           
         }
-      }
+      },
+      plugins: [doughnutLabel]
     });
   }
   overdueReceiveChartFunction() {
@@ -1367,11 +1390,11 @@ const config = new Chart('salesRegionChart', {
               barThickness:20
           }, { 
               label: 'target', 
-              backgroundColor: "transparent", 
-              borderColor:'black',
+              backgroundColor: "#0AD11E", 
+              // borderColor:'black',
               data: [14, 0, 10, 6, 12, 16], 
               borderWidth: 1,
-              barThickness:18
+              barThickness:20
           }], 
           
       }, 

@@ -209,7 +209,7 @@ getMonthName(month:any) {
         data: {
           labels: lastSevenKeys,
           datasets: [{
-            label: 'Profit in L',
+            label: 'Sales in L',
             borderColor:'#e263e5',
             backgroundColor:'#e263e5',
             data: lastSevenValuesFloat,
@@ -286,6 +286,7 @@ this.monthwaiseData = invoicesByMonth;
 console.log('this.monthwaiseData: - ',this.monthwaiseData);
 let totalGrandTotal = this.responceData.salesData.reduce((total:any, invoice:any) => total + parseFloat(invoice.grandTotal), 0);
 this.buildCardData.totalGrandTotalSalesYOY = this.indicator[0].currentMonthSales?.grandTotal ? this.indicator[0].currentMonthSales?.grandTotal : 0;
+this.buildCardData.rateChange = this.indicator[0]?.rateChange ? this.indicator[0]?.rateChange : 0;
 this.buildCardData.monthlySalesDesc =  0;
     for (let month in this.monthwaiseData) {
       console.log(`\n${month}:`);
@@ -311,7 +312,7 @@ this.buildCardData.monthlySalesDesc =  0;
             const monthYearKey = `${month}`;
 
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
-            sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal);
+            sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''));
         }
     });
     console.log('sumByMonth: - ',sumByMonth);
@@ -353,7 +354,7 @@ this.buildCardData.monthlySalesDesc =  0;
             const monthYearKey = `${month}`;
 
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
-            sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal);
+            sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''));
         }
     });
 
@@ -643,7 +644,7 @@ this.responceData.salesData.forEach((invoice:any) => {
   }
 
   // Add the grandTotal to the division's totalGrandTotal
-  divisionWiseSales[division].totalGrandTotal += parseFloat(invoice.grandTotal);
+  divisionWiseSales[division].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
 });
 let dataTotaldivision: any = []
 for (let division in divisionWiseSales) {
@@ -803,7 +804,7 @@ const values = Object.values(dataObj);
       data: {
         labels: keys,
         datasets: [{
-          label: 'Profit in L',
+          label: 'Sales in L',
           borderColor:['#41C44E','#E1E600','#E1E600','#D90000','#D90000','#D90000','#D90000'],
           backgroundColor:['#41C44E','#E1E600','#E1E600','#D90000','#D90000','#D90000','#D90000'],
           data: values,

@@ -58,9 +58,20 @@ export class DashboadbodyComponent implements OnInit {
   // this.salesOnCreditChartFunction();
 }
 getSumForDate(date:any) {
-  return this.responceData.salesData
-      .filter((invoice:any) => invoice.invoiceDate === date)
-      .reduce((sum:any, invoice:any) => sum + parseFloat(invoice.grandTotal), 0);
+  console.log('date',date);
+//  let returnObj=  this.responceData.salesData
+//       .filter((invoice:any) => invoice.invoiceDate === date)
+//       .reduce((sum:any, invoice:any) => sum + parseFloat(invoice.grandTotal), 0);
+// console.log('returnObj',returnObj);
+let sumData= 0;
+this.responceData.salesData.forEach((element:any) => {
+  if(element.invoiceDate == date){
+    console.log('element: - ',element);
+    sumData = sumData + parseFloat(element.grandTotal.replace(/,/g, ''));
+    console.log('sumData: - ',sumData);
+  }
+});
+      return sumData;
 }
 leftButtonClicked() {
   let todaysdate = this.tempLast7Days[6].date;
@@ -84,6 +95,7 @@ leftButtonClicked() {
         date.setDate(today.getDate() - i);
         const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
         const sum = this.getSumForDate(formattedDate);
+        // console.log({ date: formattedDate, sum: sum });
         last7Days.push({ date: formattedDate, sum: sum });
     }
     this.tempLast7Days = last7Days; 
@@ -186,7 +198,7 @@ getMonthName(month:any) {
     const lastSevenValues:any = values.reverse();
     
     console.log(lastSevenValues);
-    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(2)));
+    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/100000).toFixed(2)));
     let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
     console.log('lastSevenKeys: - ',lastSevenKeys);
     // console.log('decemberData: - ',decemberData);
@@ -267,7 +279,7 @@ getMonthName(month:any) {
       totalGrandTotal: 0
     };
   }
-  invoicesByMonth[monthKey].totalGrandTotal += parseFloat(invoice.grandTotal);
+  invoicesByMonth[monthKey].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
 });
 console.log('invoicesByMonth: - ',invoicesByMonth);
 this.monthwaiseData = invoicesByMonth;

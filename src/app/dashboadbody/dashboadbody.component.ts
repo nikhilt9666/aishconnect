@@ -66,9 +66,9 @@ getSumForDate(date:any) {
 let sumData= 0;
 this.responceData.salesData.forEach((element:any) => {
   if(element.invoiceDate == date){
-    console.log('element: - ',element);
+    // console.log('element: - ',element);
     sumData = sumData + parseFloat(element.grandTotal.replace(/,/g, ''));
-    console.log('sumData: - ',sumData);
+    // console.log('sumData: - ',sumData);
   }
 });
       return sumData;
@@ -288,11 +288,11 @@ let totalGrandTotal = this.responceData.salesData.reduce((total:any, invoice:any
 this.buildCardData.totalGrandTotalSalesYOY = this.indicator[0].currentMonthSales?.grandTotal ? this.indicator[0].currentMonthSales?.grandTotal : 0;
 this.buildCardData.rateChange = this.indicator[0]?.rateChange ? this.indicator[0]?.rateChange : 0;
 this.buildCardData.monthlySalesDesc =  0;
-    for (let month in this.monthwaiseData) {
-      console.log(`\n${month}:`);
-    //   console.log('Invoices:', invoicesByMonth[month].invoices);
-      totalData.push((this.monthwaiseData[month].totalGrandTotal/100).toFixed(2));
-    }
+    // for (let month in this.monthwaiseData) {
+    //   console.log(`\n${month}:`);
+    // //   console.log('Invoices:', invoicesByMonth[month].invoices);
+    //   totalData.push((this.monthwaiseData[month].totalGrandTotal/100).toFixed(2));
+    // }
    
 
     const currentYear:any = 2024;
@@ -302,17 +302,21 @@ this.buildCardData.monthlySalesDesc =  0;
     this.responceData.salesData.forEach((invoice:any) => {
         // Extract year from invoiceDate
         const invoiceYear = new Date(invoice.invoiceDate).getFullYear();
-
+        
         // Check if invoice year matches the current year
         if (invoiceYear === currentYear) {
             // Extract month from invoiceDate
-            const month = new Date(invoice.invoiceDate).toLocaleString('en-US', { month: 'short' });
-
+            // const month = new Date(invoice.invoiceDate).toLocaleString('en-US', { month: 'short' });
+            let dateParts = invoice.invoiceDate.split("-");
+            let month = parseInt(dateParts[1]);
+            console.log('month: - ',month , 'invoiceDate: - ',invoice.invoiceDate ,'invoice: - ',invoice.grandTotal);
             // Construct month/year key
             const monthYearKey = `${month}`;
-
+            // console.log('monthYearKey: - ',monthYearKey);
+            
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
-            sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''));
+            sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
+            console.log('sumByMonth[monthYearKey]: - ',sumByMonth[monthYearKey]);
         }
     });
     console.log('sumByMonth: - ',sumByMonth);
@@ -333,10 +337,10 @@ this.buildCardData.monthlySalesDesc =  0;
       return monthA - monthB;
   });
   const monthYears2024 = resultArray2024.map(obj => obj.monthYear);
-  const monthYears2024value = resultArray2024.map((obj:any) => (obj.sum/100).toFixed(2));
-  let newArray2024value = monthYears2024value.map((element:any,index:any) => index <= 2 ? element:0);
+  const monthYears2024value = resultArray2024.map((obj:any) => (obj.sum).toFixed(2));
+  // let newArray2024value = monthYears2024value.map((element:any,index:any) => index <= 3 ? element:0);
   console.log('monthYears2024',monthYears2024);
-  console.log('newArray',newArray2024value);
+  // console.log('newArray',newArray2024value);
     const targetYear = 2023;
     const sumByMonth2023:any = {};
 
@@ -348,13 +352,14 @@ this.buildCardData.monthlySalesDesc =  0;
         // Check if invoice year matches the target year
         if (invoiceYear === targetYear) {
             // Extract month from invoiceDate
-            const month = new Date(invoice.invoiceDate).toLocaleString('en-US', { month: 'short' });
+            // const month = new Date(invoice.invoiceDate).toLocaleString('en-US', { month: 'short' });
 
             // Construct month/year key
+            let dateParts = invoice.invoiceDate.split("-");
+            let month = parseInt(dateParts[1]);
             const monthYearKey = `${month}`;
-
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
-            sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''));
+            sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
         }
     });
 
@@ -381,7 +386,7 @@ this.buildCardData.monthlySalesDesc =  0;
       return monthA - monthB;
   });
   const monthYears2023 = resultArray2023.map(obj => obj.monthYear);
-  const monthYears2023value = resultArray2023.map((obj:any) => (obj.sum/100).toFixed(2));
+  const monthYears2023value = resultArray2023.map((obj:any) => (obj.sum).toFixed(2));
 
   console.log('monthYears2023',monthYears2023);
   // const labelData = monthYears2023.concat(monthYears2024);
@@ -393,7 +398,7 @@ this.buildCardData.monthlySalesDesc =  0;
   // }
     var data = {
       
-      labels: monthYears2023,
+      labels: monthNames,
       datasets: [
         {
           label: '2023',
@@ -406,7 +411,7 @@ this.buildCardData.monthlySalesDesc =  0;
         },
         {
           label: '2024',
-          data: newArray2024value,
+          data: monthYears2024value,
           backgroundColor: 'rgba(75,10,125,.5)',
           borderColor: '#C430B6',
           fill: true,

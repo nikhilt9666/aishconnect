@@ -221,7 +221,8 @@
                   <div class="col-12 row font-size-10 mmt-5">
                     <div>
 
-                      <strong style="color: green;font-size: 14px;">&uarr;</strong> 
+                      <strong *ngIf="false" style="color: green;font-size: 14px;">&uarr;</strong> 
+                      <strong *ngIf="true" style="color: red;font-size: 14px;">&darr;</strong> 
                       <strong *ngIf="false" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
                       <strong *ngIf="false" style="color: gray;">{{buildCardData.monthlySalesDesc}}</strong> 
                       <strong *ngIf="true" style="color: red;">{{buildCardData.rateChange | number:'1.2-2'}}</strong>&nbsp;
@@ -385,9 +386,10 @@
           <div class="chart-title">
             Sales OverView - Monthly
           </div>
-          <div class="chart-sub-title"><strong style="color: green;font-size: 14px;">&uarr;</strong> 
+          <div class="chart-sub-title">
+            <strong style="color: green;font-size: 14px;">&uarr;</strong> 
             <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
-            <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;increment in 2024 
+            <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;increase in 2024 
           </div>
           <div class="chart-div-align">
             <canvas id="myChart1" (click)="salesOverViewMonthlyClick()"></canvas>

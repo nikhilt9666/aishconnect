@@ -301,22 +301,23 @@ this.buildCardData.monthlySalesDesc =  0;
     // Loop through invoices
     this.responceData.salesData.forEach((invoice:any) => {
         // Extract year from invoiceDate
-        const invoiceYear = new Date(invoice.invoiceDate).getFullYear();
+        let dateParts = invoice.invoiceDate.split("-");
+        const invoiceYear = parseInt(dateParts[2]);
         
         // Check if invoice year matches the current year
         if (invoiceYear === currentYear) {
             // Extract month from invoiceDate
             // const month = new Date(invoice.invoiceDate).toLocaleString('en-US', { month: 'short' });
-            let dateParts = invoice.invoiceDate.split("-");
+            
             let month = parseInt(dateParts[1]);
-            console.log('month: - ',month , 'invoiceDate: - ',invoice.invoiceDate ,'invoice: - ',invoice.grandTotal);
+            // console.log('month: - ',month , 'invoiceDate: - ',invoice.invoiceDate ,'invoice: - ',invoice.grandTotal);
             // Construct month/year key
             const monthYearKey = `${month}`;
             // console.log('monthYearKey: - ',monthYearKey);
             
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
             sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
-            console.log('sumByMonth[monthYearKey]: - ',sumByMonth[monthYearKey]);
+            // console.log('sumByMonth[monthYearKey]: - ',sumByMonth[monthYearKey]);
         }
     });
     console.log('sumByMonth: - ',sumByMonth);
@@ -347,7 +348,8 @@ this.buildCardData.monthlySalesDesc =  0;
     // Loop through invoices
     this.responceData.salesData.forEach((invoice:any) => {
         // Extract year from invoiceDate
-        const invoiceYear = new Date(invoice.invoiceDate).getFullYear();
+        let dateParts = invoice.invoiceDate.split("-");
+        const invoiceYear = parseInt(dateParts[2]);
 
         // Check if invoice year matches the target year
         if (invoiceYear === targetYear) {
@@ -355,7 +357,7 @@ this.buildCardData.monthlySalesDesc =  0;
             // const month = new Date(invoice.invoiceDate).toLocaleString('en-US', { month: 'short' });
 
             // Construct month/year key
-            let dateParts = invoice.invoiceDate.split("-");
+            
             let month = parseInt(dateParts[1]);
             const monthYearKey = `${month}`;
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
@@ -449,6 +451,13 @@ this.buildCardData.monthlySalesDesc =  0;
           fontSize: 10,
         },
       },
+      tooltips: {
+        callbacks: {
+           title: function(t:any, d:any) {
+              return d.labels[t[0].index]+ " L";
+           }
+        }
+     },
       
         plugins: {
           // Change options for ALL labels of THIS CHART
@@ -457,6 +466,7 @@ this.buildCardData.monthlySalesDesc =  0;
             display:false,
            
           },
+          
           
         }
     };

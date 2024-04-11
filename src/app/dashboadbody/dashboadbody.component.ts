@@ -39,7 +39,7 @@ export class DashboadbodyComponent implements OnInit {
     salesLastYearYPer : '43%',
     monthlySale: '6.085',
     monthlySalesDesc: '15% ',
-    monthlySalesTotalDesc: 'increse seen last week'
+    monthlySalesTotalDesc: 'decrease seen last week'
   }
   dataSource: any = [
     {position: 'Monthly Sale', name: 'Feb (this month) vs Jan (last month)', weight: '6.04', symbol: '6.003',change: '10%'},

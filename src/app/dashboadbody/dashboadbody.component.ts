@@ -726,7 +726,7 @@ for (let division in divisionWiseSales) {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         // `${data.labels[0]}: ${data.datasets[0]}`
-        ctx.fillText("2.92 Cr." ,xCoor,yCoor);
+        ctx.fillText("3.74 Cr." ,xCoor,yCoor);
   
       }
      }

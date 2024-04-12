@@ -39,7 +39,7 @@ export class DashboadbodyComponent implements OnInit {
     salesLastYearYPer : '43%',
     monthlySale: '6.085',
     monthlySalesDesc: '15% ',
-    monthlySalesTotalDesc: 'decrease seen last week'
+    monthlySalesTotalDesc: 'decrease seen last month'
   }
   dataSource: any = [
     {position: 'Monthly Sale', name: 'Feb (this month) vs Jan (last month)', weight: '6.04', symbol: '6.003',change: '10%'},
@@ -721,12 +721,12 @@ for (let division in divisionWiseSales) {
         ctx.save();
         const xCoor = chart.getDatasetMeta(0).data[0].x;
         const yCoor = chart.getDatasetMeta(0).data[0].y;
-        ctx.font = 'bold 30px sans-sarif';
+        ctx.font = 'bold 25px sans-sarif';
         ctx.fillStyle = '#359BB4';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         // `${data.labels[0]}: ${data.datasets[0]}`
-        ctx.fillText('96%',xCoor,yCoor);
+        ctx.fillText("2.92 Cr." ,xCoor,yCoor);
   
       }
      }

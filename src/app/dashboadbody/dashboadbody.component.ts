@@ -661,6 +661,7 @@ this.responceData.salesData.forEach((invoice:any) => {
   // Add the grandTotal to the division's totalGrandTotal
   divisionWiseSales[division].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
 });
+// let combineData = {};
 let dataTotaldivision: any = []
 for (let division in divisionWiseSales) {
 
@@ -681,7 +682,8 @@ for (let division in divisionWiseSales) {
         ],
         hoverOffset: 4,
         offset:5,
-      }]
+      }],
+      totalData: (this.buildCardData.totalGrandTotalSalesYOY /10000000).toFixed(2)
     };
     const customDataLable = {
       id:'customDataLable',
@@ -721,12 +723,12 @@ for (let division in divisionWiseSales) {
         ctx.save();
         const xCoor = chart.getDatasetMeta(0).data[0].x;
         const yCoor = chart.getDatasetMeta(0).data[0].y;
-        ctx.font = 'bold 25px sans-sarif';
+        ctx.font = 'bold 22px Roboto, "Helvetica Neue", sans-serif';
         ctx.fillStyle = '#359BB4';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         // `${data.labels[0]}: ${data.datasets[0]}`
-        ctx.fillText("3.74 Cr." ,xCoor,yCoor);
+        ctx.fillText(data.totalData+' Cr.' ,xCoor,yCoor);
   
       }
      }

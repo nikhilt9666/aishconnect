@@ -200,7 +200,7 @@ leftButtonClicked() {
   }
 
   this.tempLast7Days = last7Days;
-  this.prepareDailyChart(this.tempLast7Days, true);
+  this.prepareDailyChart(this.tempLast7Days, true , true);
 }
 
 isLeftArrowClickable() {
@@ -243,7 +243,7 @@ rightButtonClicked() {
   }
 
   this.tempLast7Days = last7Days;
-  this.prepareDailyChart(this.tempLast7Days, true);
+  this.prepareDailyChart(this.tempLast7Days, true , false);
 }
 
 isRightArrowClickable() {
@@ -321,7 +321,7 @@ getMonthName(month:any) {
     const decemberData:any = {};
     const last7DaysData = this.getLast7DaysData(this.responceData.salesData);
     console.log('last7DaysData',last7DaysData);
-    this.prepareDailyChart(last7DaysData,false);
+    this.prepareDailyChart(last7DaysData,false,true);
     // Loop through the invoices
     // this.responceData.forEach((invoice:any) => {
     //     // Parse the invoice date
@@ -347,7 +347,7 @@ getMonthName(month:any) {
     // const lastSevenData = decemberData.slice(-7);
     
   }
-  prepareDailyChart(last7DaysData:any,status:boolean){
+  prepareDailyChart(last7DaysData:any,status:boolean,order:boolean){
     const result:any = {};
 
 // Loop through the data array and populate the result object
@@ -356,10 +356,25 @@ getMonthName(month:any) {
         const formattedDate = `${dateParts[0]} ${this.getMonthName(dateParts[1])}`;
         result[formattedDate] = item.sum;
       });
-    const keys = Object.keys(result);
-    const lastSevenKeys = keys.reverse();
-    const values = Object.values(result);
-    const lastSevenValues:any = values.reverse();;
+      let keys:any = [] ;
+      let lastSevenKeys:any = [] ;
+      let values:any = [] ;
+      let lastSevenValues:any = [] ;
+
+      if(order){
+
+        keys = Object.keys(result);
+        lastSevenKeys = keys.reverse();
+        values = Object.values(result);
+        lastSevenValues = values.reverse();
+      }
+      else{
+        keys = Object.keys(result);
+        lastSevenKeys = keys;
+        values = Object.values(result);
+        lastSevenValues = values;
+      }
+    
     
     console.log(lastSevenValues);
     const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(2)));
@@ -843,8 +858,8 @@ this.responceData.salesData.forEach((invoice:any) => {
       totalGrandTotal: 0
     };
   }
-  console.log("divisionWiseSales=>", divisionWiseSales);
-  console.log("labels=>", Object.keys(divisionWiseSales));
+  // console.log("divisionWiseSales=>", divisionWiseSales);
+  // console.log("labels=>", Object.keys(divisionWiseSales));
   
   
 
@@ -946,13 +961,20 @@ for (let division in divisionWiseSales) {
         plugins: 
         {
           // Change options for ALL labels of THIS CHART
-          datalabels: {
-            font: {
-              weight: 'bold',
-              size: 16,
+        //   datalabels: {
+        //     font: {
+        //       weight: 'bold',
+        //       size: 16,
               
-            },
-            color: 'white',
+        //     },
+        //     color: 'white',
+            
+        //   },
+        //   legend: {
+        //     display: false,
+        //  } ,
+          datalabels: {
+            display:false
             
           },
           legend: {
@@ -960,8 +982,10 @@ for (let division in divisionWiseSales) {
          } ,
          
          doughnutLabel: {
-          labels: [
-            {
+           labels: [
+             {
+              // display:false,
+              
               // text: '300', //Chart.dataset.data.reduce((e,i)=> +:e, 0),
               font: {
                 // size: '30',

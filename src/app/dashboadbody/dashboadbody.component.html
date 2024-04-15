@@ -362,7 +362,7 @@
     </div>
     <div class="col-12 mmt-20 mml-15">
       <div class="row">
-        <div class="col-4 chat-div-alignment pp-10 font-size-10">
+        <div class="col-4 chat-div-alignment pp-10 font-size-8">
           <div class="chart-title mml-10">
             Sales Overview - Daily in (Lac)
           </div>
@@ -372,13 +372,19 @@
             <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;{{salesData.monthlySalesTotalDesc}} 
           </div>
           <div class="row" style="margin-left: 10px;">
-
+            <div class="col-10">
+              <div class="row">
             <button (click)="leftButtonClicked()" class="round-button col-3"> <mat-icon>keyboard_arrow_left</mat-icon></button> 
             <button (click)="rightButtonClicked()" class="round-button col-3"> <mat-icon>keyboard_arrow_right</mat-icon></button>
+            </div>
+          </div>
+            <div class=" col-2 folt-right font-size-14 text-end mt-18" (click)="zoomChartFunction('daily')">
+              <mat-icon class=""> zoom_out_map</mat-icon>
+            </div>
           </div>
           <div class="chart-div-align">
             
-            <canvas id="salesOverView" (click)="salesOverViewClick()"></canvas>
+            <canvas #salesChartDaily id="salesOverView" (click)="salesOverViewClick()"></canvas>
           </div>
         
         </div>
@@ -391,16 +397,26 @@
             <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
             <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;increase in 2024 
           </div>
+          <div class="row">
+          <div class=" col-10 folt-right font-size-14 text-end mt-18" (click)="zoomChartFunction('monthly')">
+            <mat-icon class=""> zoom_out_map</mat-icon>
+          </div>
+        </div>
           <div class="chart-div-align">
-            <canvas id="myChart1" (click)="salesOverViewMonthlyClick()"></canvas>
+            <canvas #salesChartMonthly id="myChart1" (click)="salesOverViewMonthlyClick()"></canvas>
           </div>
         </div>
         <div class="col-4 chat-div-alignment pp-10 font-size-10">
           <div class="chart-title">
             Division Wise- Sales
           </div>
+
+          <div class="row">
+            <div class=" col-10 folt-right font-size-14 text-end mt-18" (click)="zoomChartFunction('division')">
+              <mat-icon class=""> zoom_out_map</mat-icon>
+            </div>
           <div class="chart-div-align " style="text-align: center;padding-left: 15%;">
-            <canvas id="myChart2" class="donut-chart-alignment" (click)="divisionwiseSaleFunction()" style="margin-top: 28px;"></canvas>
+            <canvas #salesChartDivision id="myChart2" class="donut-chart-alignment" (click)="divisionwiseSaleFunction()" style="margin-top: 28px;"></canvas>
             
           </div>
         </div>

@@ -28,6 +28,7 @@ import { ZoneWiseSaleComponent } from './zone-wise-sale/zone-wise-sale.component
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { UploadFileComponent } from './upload-file/upload-file.component';
+import { ChartDialogComponent } from './dashboadbody/chart-dialog/chart-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +39,8 @@ import { UploadFileComponent } from './upload-file/upload-file.component';
     SalesOverviewMonthlyComponent,
     DailyCahrtPopupComponent,
     ZoneWiseSaleComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ChartDialogComponent
   ],
   imports: [
     BrowserModule,

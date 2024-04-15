@@ -1,12 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Chart, registerables} from 'chart.js';
+import { Chart, ChartDataset, registerables} from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { SharedAPIService} from './../shareServices/shared-api.service';
 import 'chartjs-plugin-doughnutlabel-v3';
 import 'chartjs-plugin-datalabels';
 import { AnyObject } from 'chart.js/types/basic';
 import DoughnutLabel from 'chartjs-plugin-doughnutlabel-v3';
+import {
+  MatDialog
+} from '@angular/material/dialog';
+import { DailyCahrtPopupComponent } from '../sales-overview-daily/daily-cahrt-popup/daily-cahrt-popup.component';
+import { ChartDialogComponent } from './chart-dialog/chart-dialog.component';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboadbody',
@@ -14,12 +20,29 @@ import DoughnutLabel from 'chartjs-plugin-doughnutlabel-v3';
   styleUrls: ['./dashboadbody.component.scss']
 })
 export class DashboadbodyComponent implements OnInit {
+  @ViewChild('salesChartDaily', { static: true }) salesChartDaily!: ElementRef;
+  @ViewChild('salesChartMonthly', { static: true }) salesChartMonthly!: ElementRef;
+  @ViewChild('salesChartDivision', { static: true }) salesChartDivision!: ElementRef;
   dailyChart: any;
-
-  constructor(private router: Router,private sharedService: SharedAPIService) { 
+  leftArrowClickCount = 0;
+  chartData: any={};
+//   currentStartDate: Date;
+// currentEndDate: Date;
+  constructor(private router: Router,private http: HttpClient,private sharedService: SharedAPIService, public dialog: MatDialog) { 
+    
     Chart.register(...registerables,
       ChartDataLabels,);
+    //   this.currentStartDate = new Date();
+    // this.currentEndDate = new Date();
+    // this.currentEndDate.setDate(this.currentEndDate.getDate() - 6);
+    // this.updateData();
   }
+
+  ngAfterViewInit(): void {
+    this.salesOverviewDayly(); // Call chart initialization here or wherever appropriate
+  }
+
+
   salesData: any = {
     salesMM : 50.99,
     momPer : '43%',
@@ -52,8 +75,11 @@ export class DashboadbodyComponent implements OnInit {
   monthwaiseData:any =[];
   buildCardData:any = {};
   tempLast7Days: any;
+
+
   ngOnInit(): void {
     this.responceDataFunction();
+   
     
   // this.salesOnCreditChartFunction();
 }
@@ -73,69 +99,207 @@ this.responceData.salesData.forEach((element:any) => {
 });
       return sumData;
 }
+
+//  original/old code of left and right button
+
+// leftButtonClicked() {
+//   let todaysdate = this.tempLast7Days[6].date;
+//   let samllestdate = this.tempLast7Days[0].date;
+//   this.tempLast7Days.forEach((element: any) => {
+//     const currentdate = element.date;
+//     if (currentdate < samllestdate)
+//       samllestdate = currentdate;
+//   });
+//   todaysdate = samllestdate;
+//   console.log("left button clicked");
+//   console.log(this.tempLast7Days);
+//   const parts = todaysdate.split('-');
+//   const month = parseInt(parts[1], 10) - 1;
+//   const day = parseInt(parts[0],10);
+//   const year = parseInt(parts[2], 10);
+//   const today =  new Date(year, month, day);
+//   const last7Days = [];
+//     for (let i = 0; i < 7; i++) {
+//         const date = new Date(today);
+//         date.setDate(today.getDate() - i);
+//         const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+//         const sum = this.getSumForDate(formattedDate);
+//         // console.log({ date: formattedDate, sum: sum });
+//         last7Days.push({ date: formattedDate, sum: sum });
+//     }
+//     this.tempLast7Days = last7Days; 
+//     console.log("after");
+//     console.log(this.tempLast7Days);
+//     this.prepareDailyChart(this.tempLast7Days,true);
+
+// }
+// rightButtonClicked() {
+//   console.log("right button clicked");
+//   let todaysdate = this.tempLast7Days[6].date;
+//   let biggestdate = this.tempLast7Days[0].date;
+//   this.tempLast7Days.forEach((element: any) => {
+//     const currentdate = element.date;
+//     if (currentdate > biggestdate)
+//     biggestdate = currentdate;
+//   });
+//   todaysdate = biggestdate;
+  
+//   // console.log("left button clicked");
+//   console.log(this.tempLast7Days);
+//   const parts = todaysdate.split('-');
+//   const month = parseInt(parts[1], 10)-1;
+//   const day = parseInt(parts[0],10);
+//   const year = parseInt(parts[2], 10);
+//   const today =  new Date(year, month, day);
+  
+//   const last7Days = [];
+//     for (let i = 0; i < 7; i++) {
+//         const date = new Date(today);
+//         date.setDate(today.getDate() + i);
+//         const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+//         const sum = this.getSumForDate(formattedDate);
+//         last7Days.push({ date: formattedDate, sum: sum });
+//     }
+//     this.tempLast7Days = last7Days; 
+//     console.log("after");
+//     console.log(this.tempLast7Days);
+//     this.prepareDailyChart(this.tempLast7Days,true);
+// }
+
+
+
+// new code of left and right button
+
 leftButtonClicked() {
-  let todaysdate = this.tempLast7Days[6].date;
-  let samllestdate = this.tempLast7Days[0].date;
+  // Check if left arrow is clickable
+  if (!this.isLeftArrowClickable()) {
+    return;
+  }
+  
+  let smallestDate = this.tempLast7Days[0].date;
   this.tempLast7Days.forEach((element: any) => {
-    const currentdate = element.date;
-    if (currentdate < samllestdate)
-      samllestdate = currentdate;
-  });
-  todaysdate = samllestdate;
-  console.log("left button clicked");
-  console.log(this.tempLast7Days);
-  const parts = todaysdate.split('-');
-  const month = parseInt(parts[1], 10) - 1;
-  const day = parseInt(parts[0],10);
-  const year = parseInt(parts[2], 10);
-  const today =  new Date(year, month, day);
-  const last7Days = [];
-    for (let i = 0; i < 7; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() - i);
-        const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
-        const sum = this.getSumForDate(formattedDate);
-        // console.log({ date: formattedDate, sum: sum });
-        last7Days.push({ date: formattedDate, sum: sum });
+    const currentDate = element.date;
+    if (currentDate < smallestDate) {
+      smallestDate = currentDate;
     }
-    this.tempLast7Days = last7Days; 
-    console.log("after");
-    console.log(this.tempLast7Days);
-    this.prepareDailyChart(this.tempLast7Days,true);
+  });
+
+  const parts = smallestDate.split('-');
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[0], 10);
+  const year = parseInt(parts[2], 10);
+  const today = new Date(year, month, day);
+
+  const last7Days = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const formattedDate = date.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+    const sum = this.getSumForDate(formattedDate);
+    last7Days.push({ date: formattedDate, sum: sum });
+  }
+
+  this.tempLast7Days = last7Days;
+  this.prepareDailyChart(this.tempLast7Days, true);
+}
+
+isLeftArrowClickable() {
+  const currentSmallestDate = this.tempLast7Days[0].date;
+  const currentDate = new Date();
+  const parts = currentSmallestDate.split('-');
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[0], 10);
+  const year = parseInt(parts[2], 10);
+  const smallestDate = new Date(year, month, day);
+
+  // Calculate the date 14 days ago
+  const minDate = new Date();
+  minDate.setDate(currentDate.getDate() - 14);
+
+  // If the current smallest date is greater than 14 days ago, left arrow is clickable
+  return smallestDate > minDate;
+}
+
+rightButtonClicked() {
+  // Check if right arrow is clickable
+  if (!this.isRightArrowClickable()) {
+    return;
+  }
+  
+  let biggestDate = this.tempLast7Days[6].date;
+  const parts = biggestDate.split('-');
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[0], 10);
+  const year = parseInt(parts[2], 10);
+  const today = new Date(year, month, day);
+
+  const last7Days = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() + i);
+    const formattedDate = date.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
+    const sum = this.getSumForDate(formattedDate);
+    last7Days.push({ date: formattedDate, sum: sum });
+  }
+
+  this.tempLast7Days = last7Days;
+  this.prepareDailyChart(this.tempLast7Days, true);
+}
+
+isRightArrowClickable() {
+  const currentBiggestDate = this.tempLast7Days[6].date;
+  const currentDate = new Date();
+  const parts = currentBiggestDate.split('-');
+  const month = parseInt(parts[1], 10) - 1;
+  const day = parseInt(parts[0], 10);
+  const year = parseInt(parts[2], 10);
+  const biggestDate = new Date(year, month, day);
+
+  // If the current biggest date is less than or equal to current date, right arrow is clickable
+  return biggestDate <= currentDate;
+}
+
+zoomChartFunction(chartType: string){
+ 
+  let chartCanvas: HTMLCanvasElement;
+  let chartRef: ElementRef;
+
+  // Determine which chart to zoom based on chartType parameter
+  if (chartType === 'daily') {
+    chartCanvas = this.salesChartDaily.nativeElement;
+    chartRef = this.salesChartDaily;
+  } else if (chartType === 'monthly') {
+    chartCanvas = this.salesChartMonthly.nativeElement;
+    chartRef = this.salesChartMonthly;
+  }else if (chartType === 'division') {
+    chartCanvas = this.salesChartDivision.nativeElement;
+    chartRef = this.salesChartDivision;
+  }else {
+    // Handle invalid chartType
+    return;
+  }
+  // Clone the current chart
+  const cloneCanvas = document.createElement('canvas');
+  cloneCanvas.width =  chartCanvas.width;
+  cloneCanvas.height =  chartCanvas.height;
+  const cloneContext = cloneCanvas.getContext('2d');
+  if (cloneContext) {
+    cloneContext.drawImage( chartCanvas, 0, 0);
+
+    // Open a dialog with the cloned chart
+    this.dialog.open(ChartDialogComponent, {
+      data: {
+        chartImage: cloneCanvas.toDataURL()
+      },
+      height: '85vh',
+      width: '55vw',
+    });
+  }
 
 }
-rightButtonClicked() {
-  console.log("right button clicked");
-  let todaysdate = this.tempLast7Days[6].date;
-  let biggestdate = this.tempLast7Days[0].date;
-  this.tempLast7Days.forEach((element: any) => {
-    const currentdate = element.date;
-    if (currentdate > biggestdate)
-    biggestdate = currentdate;
-  });
-  todaysdate = biggestdate;
-  
-  // console.log("left button clicked");
-  console.log(this.tempLast7Days);
-  const parts = todaysdate.split('-');
-  const month = parseInt(parts[1], 10)-1;
-  const day = parseInt(parts[0],10);
-  const year = parseInt(parts[2], 10);
-  const today =  new Date(year, month, day);
-  
-  const last7Days = [];
-    for (let i = 0; i < 7; i++) {
-        const date = new Date(today);
-        date.setDate(today.getDate() + i);
-        const formattedDate = date.toLocaleDateString('es-CL', {  day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-');
-        const sum = this.getSumForDate(formattedDate);
-        last7Days.push({ date: formattedDate, sum: sum });
-    }
-    this.tempLast7Days = last7Days; 
-    console.log("after");
-    console.log(this.tempLast7Days);
-    this.prepareDailyChart(this.tempLast7Days,true);
-}
+
+
+
 getLast7DaysData(data:any) {
   const today = new Date();
     const last7Days = [];
@@ -195,10 +359,12 @@ getMonthName(month:any) {
     const keys = Object.keys(result);
     const lastSevenKeys = keys.reverse();
     const values = Object.values(result);
-    const lastSevenValues:any = values.reverse();
+    const lastSevenValues:any = values.reverse();;
     
     console.log(lastSevenValues);
-    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/100000).toFixed(2)));
+    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(2)));
+    console.log("lastSevenValuesFloat", lastSevenValuesFloat);
+    
     let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
     console.log('lastSevenKeys: - ',lastSevenKeys);
     // console.log('decemberData: - ',decemberData);
@@ -214,18 +380,23 @@ getMonthName(month:any) {
             backgroundColor:'#e263e5',
             data: lastSevenValuesFloat,
             borderWidth: 1,
-            barThickness:18
+            barThickness:18,
+            // barPercentage: 0.8, // Adjust the bar width relative to available space
+            // categoryPercentage: 0.9
+        
           }]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: false,         
           scales: {
             
               x: {
                  grid: {
                     display: false
-                 }
+                 },              
+                
+
               },
               y: {
                  grid: {
@@ -246,14 +417,20 @@ getMonthName(month:any) {
               // color: '#36A2EB',
               anchor: 'end',
               align: 'end',
+              
               formatter: function (value, context) {
                 // Display the actual data value
                 return value+' L';
+            },
+            font: {
+              size: 9 // Adjust the font size here
             }
               // display:false
-            },
-          
+            },         
+                     
           },
+                
+         
         }
       });
     }
@@ -532,13 +709,20 @@ this.buildCardData.monthlySalesDesc =  0;
   indicator:any =[{'indicatorName': 'Monthly Sale', 'period': 'Apr (this month) vs Mar (last month)', 'currentMonthSales': {}, 'previousMonthSales': {'invoiceMonth': 'Mar', 'invoiceYear': '2024', 'grandTotal': 24908534.0}, 'rateChange': -100.0}];
   responceDataFunction() {    
       const getUrl = '/sales-data';
+      // const salesDataUrl = 'assets/SalesData.txt';
       const requestData= {
         "year": "2024",
         "month": "march",
         "companyCode": "c2002"
       }
+
+  //     let params = new HttpParams()
+  // .set('year', requestData.year)
+  // .set('month', requestData.month)
+  // .set('companyCode', requestData.companyCode);
+      // this.http.get(salesDataUrl).subscribe((responceData: any) => {
       this.sharedService.getSpecificData(getUrl,requestData).subscribe(responceData => {
-        console.log('responceData: -',responceData);
+        console.log('sales responceData: -',responceData);
         this.responceData = responceData;
         this.totalSales= this.responceData.totalSales;
 
@@ -646,6 +830,8 @@ this.top5Performers = {
     }
   resionwiseSales() {
     let divisionWiseSales:any = {};
+    let dataTotaldivision: number[] = [];
+  let labels: string[] = [];
 
 // Iterate through each invoice
 this.responceData.salesData.forEach((invoice:any) => {
@@ -657,30 +843,46 @@ this.responceData.salesData.forEach((invoice:any) => {
       totalGrandTotal: 0
     };
   }
+  console.log("divisionWiseSales=>", divisionWiseSales);
+  console.log("labels=>", Object.keys(divisionWiseSales));
+  
+  
 
   // Add the grandTotal to the division's totalGrandTotal
   divisionWiseSales[division].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
 });
-let dataTotaldivision: any = []
+
+// let backgroundColors: string[] = [];
 for (let division in divisionWiseSales) {
 
-  dataTotaldivision.push((divisionWiseSales[division].totalGrandTotal/100).toFixed(2));
+  // dataTotaldivision.push((divisionWiseSales[division].totalGrandTotal/100).toFixed(2));
+  labels.push(division);
+  dataTotaldivision.push(parseFloat((divisionWiseSales[division].totalGrandTotal / 100).toFixed(2)));
+  console.log("dataTotaldivision=>", dataTotaldivision);
+  
 }
+
 // Print the result
-    const data1 = {
-      labels: Object.keys(divisionWiseSales),
+    const datadiv = {
+      labels: labels,
+      // labels: Object.keys(divisionWiseSales),
       datasets: [{
-        label: '10%',
-        data: dataTotaldivision,
+        label: 'divsion wise',
+        // data:[10000, 6000, 500],
+        data: [dataTotaldivision[0], dataTotaldivision[1]],
+        // backgroundColor:backgroundColors,
         backgroundColor: [
           'rgb(130, 110, 255)',
+          'rgb(255, 165, 0)',
           'rgb(217, 110, 255)',
           'rgb(74, 92, 255)',
           'rgb(252, 110, 255)',
           'rgb(173, 105, 255)',
+          , // Orange color for thin division
         ],
-        hoverOffset: 4,
-        offset:5,
+        // backgroundColor: backgroundColors,
+        hoverOffset: 3,
+        // offset:5,
       }]
     };
     const customDataLable = {
@@ -730,14 +932,16 @@ for (let division in divisionWiseSales) {
   
       }
      }
+
+    
     const config = new Chart('myChart2',{
       type: 'doughnut',
-      data: data1,
+      data: datadiv,
       // plugins: [ChartDataLabels],
       options: {
-        layout:{
-          padding:30
-        },
+        // layout:{
+        //   padding:30
+        // },
       
         plugins: 
         {
@@ -745,14 +949,16 @@ for (let division in divisionWiseSales) {
           datalabels: {
             font: {
               weight: 'bold',
-              size: 15,
+              size: 16,
               
             },
-            color: 'white'
+            color: 'white',
+            
           },
           legend: {
             display: false,
          } ,
+         
          doughnutLabel: {
           labels: [
             {
@@ -773,6 +979,7 @@ for (let division in divisionWiseSales) {
       },
       plugins:[doughnutLabel]
     });
+
   }
 
   receivableAgeingChartFunction() {

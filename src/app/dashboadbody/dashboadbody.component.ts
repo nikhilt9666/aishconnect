@@ -418,7 +418,7 @@ getMonthName(month:any) {
                     display: true,
                     
                  },
-                 suggestedMax:maxNo+5  
+                 suggestedMax:maxNo+100 
               
            },
            
@@ -452,6 +452,7 @@ getMonthName(month:any) {
     else{
       this.dailyChart.data.labels = lastSevenKeys;
       this.dailyChart.data.datasets[0].data = lastSevenValuesFloat;
+      this.dailyChart.options.scales.y.suggestedMax = maxNo+100;
       this.dailyChart.update();
     }
   }
@@ -864,9 +865,9 @@ this.responceData.salesData.forEach((invoice:any) => {
   
 
   // Add the grandTotal to the division's totalGrandTotal
-  divisionWiseSales[division].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
+  divisionWiseSales[division].totalGrandTotal = divisionWiseSales[division].totalGrandTotal+ parseFloat(invoice.grandTotal.replace(/,/g, ''));
 });
-
+console.log('divisionWiseSales: -',divisionWiseSales);
 // let backgroundColors: string[] = [];
 for (let division in divisionWiseSales) {
 
@@ -874,6 +875,7 @@ for (let division in divisionWiseSales) {
   labels.push(division);
   dataTotaldivision.push(parseFloat((divisionWiseSales[division].totalGrandTotal / 100).toFixed(2)));
   console.log("dataTotaldivision=>", dataTotaldivision);
+  console.log("dataTotaldivision=>", division);
   
 }
 
@@ -884,7 +886,7 @@ for (let division in divisionWiseSales) {
       datasets: [{
         label: 'divsion wise',
         // data:[10000, 6000, 500],
-        data: [dataTotaldivision[0], dataTotaldivision[1]],
+        data: [dataTotaldivision[0], dataTotaldivision[1],dataTotaldivision[2]],
         // backgroundColor:backgroundColors,
         backgroundColor: [
           'rgb(130, 110, 255)',
@@ -1296,7 +1298,7 @@ const values = Object.values(dataObj);
             xAxes: [{
                 barThickness: 6,  // number (pixels) or 'flex'
                 maxBarThickness: 8 ,// number (pixels)
-                suggestedMax: maxNo+10
+                suggestedMax: maxNo+100
             }]
         }
         }
@@ -1319,7 +1321,7 @@ const values = Object.values(dataObj);
               display: false
               
            },
-           suggestedMax: maxNo+10
+           suggestedMax: maxNo+100
            
         },
         y: {

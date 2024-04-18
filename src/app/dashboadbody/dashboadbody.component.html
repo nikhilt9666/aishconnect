@@ -367,9 +367,11 @@
             Sales Overview - Daily in (Lac)
           </div>
           
-          <div class="chart-sub-title mml-10"><strong style="color: green;font-size: 14px;">&uarr;</strong> 
-            <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
-            <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;{{salesData.monthlySalesTotalDesc}} 
+          <div class="chart-sub-title mml-10">
+            <strong *ngIf="false" style="color: green;font-size: 14px;">&uarr;</strong> 
+            <strong *ngIf="false" style="color: green;">{{buildCardData.rateChange}}</strong> 
+            <strong *ngIf="true" style="color: red;">&darr; {{buildCardData.rateChange | number:'1.2-2'}} </strong>
+            &nbsp; decrease seen last month 
           </div>
           <div class="row" style="margin-left: 10px;">
             <div class="col-10">
@@ -393,9 +395,10 @@
             Sales OverView - Monthly in (Lac)
           </div>
           <div class="chart-sub-title">
-            <strong style="color: green;font-size: 14px;">&uarr;</strong> 
-            <strong *ngIf="true" style="color: green;">{{salesData.monthlySalesDesc}}</strong> 
-            <strong *ngIf="false" style="color: red;">{{salesData.monthlySalesDesc}}</strong>&nbsp;increase in 2024 
+            <strong *ngIf="false" style="color: green;font-size: 14px;">&uarr;</strong> 
+            <strong *ngIf="false" style="color: green;">&uarr; {{salesData.monthlySalesDesc}}</strong> 
+            <strong *ngIf="true" style="color: red;">&darr; {{totalSales.YoYPct | number:'1.2-2'}} </strong> 
+            &nbsp; decrease in 2024
           </div>
           <div class="row">
           <div class=" col-10 folt-right font-size-14 text-end mt-18" (click)="zoomChartFunction('monthly')">
@@ -413,10 +416,10 @@
 
           <div class="row">
             <div class=" col-10 folt-right font-size-14 text-end mt-18" (click)="zoomChartFunction('division')">
-              <mat-icon class=""> zoom_out_map</mat-icon>
+              <mat-icon class="" style="margin-top: 2px !important;"> zoom_out_map</mat-icon>
             </div>
           <div class="chart-div-align " style="text-align: center;padding-left: 15%;">
-            <canvas #salesChartDivision id="myChart2" class="donut-chart-alignment" (click)="divisionwiseSaleFunction()" style="margin-top: 28px;"></canvas>
+            <canvas #salesChartDivision id="myChart2" class="donut-chart-alignment" (click)="divisionwiseSaleFunction()" style="margin-top: 5px;"></canvas>
             
           </div>
         </div>

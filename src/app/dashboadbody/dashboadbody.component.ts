@@ -39,7 +39,7 @@ export class DashboadbodyComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.salesOverviewDayly(); // Call chart initialization here or wherever appropriate
+    // this.salesOverviewDayly(); // Call chart initialization here or wherever appropriate
   }
 
 
@@ -92,8 +92,9 @@ getSumForDate(date:any) {
 let sumData= 0;
 this.responceData.salesData.forEach((element:any) => {
   if(element.invoiceDate == date){
-    // console.log('element: - ',element);
-    sumData = sumData + parseFloat(element.grandTotal.replace(/,/g, ''));
+    console.log('element: - ',element);
+    // sumData = sumData + parseFloat(element.grandTotal.replace(/,/g, ''));
+    sumData = sumData + parseFloat(element.grandTotal);
     // console.log('sumData: - ',sumData);
   }
 });
@@ -472,7 +473,8 @@ getMonthName(month:any) {
       totalGrandTotal: 0
     };
   }
-  invoicesByMonth[monthKey].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
+  // invoicesByMonth[monthKey].totalGrandTotal += parseFloat(invoice.grandTotal.replace(/,/g, ''));
+  invoicesByMonth[monthKey].totalGrandTotal += parseFloat(invoice.grandTotal);
 });
 console.log('invoicesByMonth: - ',invoicesByMonth);
 this.monthwaiseData = invoicesByMonth;
@@ -509,7 +511,8 @@ this.buildCardData.monthlySalesDesc =  0;
             // console.log('monthYearKey: - ',monthYearKey);
             
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
-            sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
+            // sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
+            sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal)/100000;
             // console.log('sumByMonth[monthYearKey]: - ',sumByMonth[monthYearKey]);
         }
     });
@@ -554,7 +557,8 @@ this.buildCardData.monthlySalesDesc =  0;
             let month = parseInt(dateParts[1]);
             const monthYearKey = `${month}`;
             // If sum for this month/year already exists, add grandTotal to it, otherwise initialize it
-            sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
+            // sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal.replace(/,/g, ''))/100000;
+            sumByMonth2023[monthYearKey] = (sumByMonth2023[monthYearKey] || 0) + parseFloat(invoice.grandTotal)/100000;
         }
     });
 
@@ -865,7 +869,8 @@ this.responceData.salesData.forEach((invoice:any) => {
   
 
   // Add the grandTotal to the division's totalGrandTotal
-  divisionWiseSales[division].totalGrandTotal = divisionWiseSales[division].totalGrandTotal+ parseFloat(invoice.grandTotal.replace(/,/g, ''));
+  // divisionWiseSales[division].totalGrandTotal = divisionWiseSales[division].totalGrandTotal+ parseFloat(invoice.grandTotal.replace(/,/g, ''));
+  divisionWiseSales[division].totalGrandTotal = divisionWiseSales[division].totalGrandTotal+ parseFloat(invoice.grandTotal);
 });
 console.log('divisionWiseSales: -',divisionWiseSales);
 // let backgroundColors: string[] = [];

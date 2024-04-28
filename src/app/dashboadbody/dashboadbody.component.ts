@@ -378,7 +378,7 @@ getMonthName(month:any) {
     
     
     console.log(lastSevenValues);
-    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(2)));
+    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(3)));
     console.log("lastSevenValuesFloat", lastSevenValuesFloat);
     
     let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
@@ -612,7 +612,7 @@ this.buildCardData.monthlySalesDesc =  0;
           label: '2024',
           data: monthYears2024value,
           backgroundColor: 'rgba(75,10,125,.5)',
-          borderColor: '#C430B6',
+          borderColor: 'red',
           fill: true,
           lineTension: 0,
           radius: 4,
@@ -686,8 +686,8 @@ this.buildCardData.monthlySalesDesc =  0;
           y: {
              grid: {
                 display: true
-             }
-          
+             },
+          beginAtZero:true
        }
       },
           plugins: {

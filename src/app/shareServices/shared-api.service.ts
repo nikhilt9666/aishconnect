@@ -27,6 +27,7 @@ export class SharedAPIService {
     const getDataurl = this.baseUrl+url;
      return this.httpClient.post(getDataurl,payload);
    }
+   
    public getSalesTarget():Observable<any>{
     const url = this.baseUrl+'/sales-target-data';
     return this.httpClient.get(url);

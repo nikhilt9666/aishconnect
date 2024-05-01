@@ -28,6 +28,8 @@ export class DashboadbodyComponent implements OnInit {
   chartData: any={};
   salesTargetResponse: any;
   MonthSalesTarget: any;
+  regionWiseTarget:any;
+  salesTargetByZone!:any[];
 //   currentStartDate: Date;
 // currentEndDate: Date;
   constructor(private router: Router,private http: HttpClient,private sharedService: SharedAPIService, public dialog: MatDialog) { 
@@ -81,16 +83,22 @@ export class DashboadbodyComponent implements OnInit {
 
   ngOnInit(): void {
     this.responceDataFunction();
-   this.getSalesTargetData()
+
     
   // this.salesOnCreditChartFunction();
 }
-  getSalesTargetData() {
-    this.sharedService.getSalesTarget().subscribe(response=>{
-      this.salesTargetResponse=response;
-      this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonth;
-    })
-  }
+ getSalesTarget(){
+  // this.sharedService.getSalesTarget().subscribe(response=>{
+  //   this.salesTargetResponse=response;
+  //   this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonth;
+  //   this.regionWiseTarget=this.salesTargetResponse.salesTargetByZone;
+  // console.log(this.regionWiseTarget)
+  
+  
+  // })
+ }
+
+  
 getSumForDate(date:any) {
   console.log('date',date);
 //  let returnObj=  this.responceData.salesData
@@ -770,9 +778,20 @@ this.buildCardData.monthlySalesDesc =  0;
         this.salesOverviewDayly();
    
         this.salesOverViewMonthlyFunction();
-      this.divideBarChart();
+                this.resionwiseSales();
+                
 
-        this.resionwiseSales();
+          this.sharedService.getSalesTarget().subscribe(response=>{
+            this.salesTargetResponse=response;
+            this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonth;
+            this.regionWiseTarget=this.salesTargetResponse.salesTargetByZone;
+          console.log(this.regionWiseTarget)
+          this.divideBarChart();
+          this.salesRevinueRegion();
+          
+          })
+
+
       this.gearChart();},
       (error:any)=>{
         console.log(error);
@@ -783,6 +802,8 @@ this.buildCardData.monthlySalesDesc =  0;
    
     this.salesOverViewMonthlyFunction();
     this.divideBarChart();
+
+          this.salesRevinueRegion();
 
     this.resionwiseSales();
   this.gearChart();
@@ -839,7 +860,7 @@ this.top5Performers = {
         console.log('responceData type: - ',typeof responceData);
         this.AgeingResponceData = responceData
         // this.divideBarChart();
-        this.salesRevinueRegion();
+        // this.salesRevinueRegion();
         this.dayReceiveOutStandingFunction();
         this.overdueReceiveChartFunction();
         this.topFivecustomer();
@@ -1670,11 +1691,21 @@ const values = Object.values(dataObj);
   
   }
   salesRevinueRegion() {
-    const labels = ['EAST','WEST','NORTH','SOUTH'];
+let keys:string[]=[];
+let valuesInLacs:number[]=[];
+
+     Object.entries(this.regionWiseTarget).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        keys.push(key);
+        valuesInLacs.push((value as number) / 100000);
+      }
+    });
+
+  const labels =keys;
   const data = {
   labels: labels,
   borderWidth: 1,
-              barThickness:10,
+   barThickness:10,
   datasets: [{
     axis: 'y',
     label: 'Actual',
@@ -1691,7 +1722,7 @@ const values = Object.values(dataObj);
   {
     axis: 'y',
     label: 'Target',
-    data: [65, 59, 80, 81],
+    data:valuesInLacs ,
     fill: false,
     backgroundColor: [
       '#D4D4D4',

@@ -26,6 +26,8 @@ export class DashboadbodyComponent implements OnInit {
   dailyChart: any;
   leftArrowClickCount = 0;
   chartData: any={};
+  salesTargetResponse: any;
+  MonthSalesTarget: any;
 //   currentStartDate: Date;
 // currentEndDate: Date;
   constructor(private router: Router,private http: HttpClient,private sharedService: SharedAPIService, public dialog: MatDialog) { 
@@ -79,10 +81,16 @@ export class DashboadbodyComponent implements OnInit {
 
   ngOnInit(): void {
     this.responceDataFunction();
-   
+   this.getSalesTargetData()
     
   // this.salesOnCreditChartFunction();
 }
+  getSalesTargetData() {
+    this.sharedService.getSalesTarget().subscribe(response=>{
+      this.salesTargetResponse=response;
+      this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonth;
+    })
+  }
 getSumForDate(date:any) {
   console.log('date',date);
 //  let returnObj=  this.responceData.salesData
@@ -1742,6 +1750,7 @@ const config = new Chart('salesRegionChart', {
     const sumByMonth:any = {};
     this.responceData.salesData.forEach((invoice:any) => {
       // Extract year from invoiceDate
+      
       let dateParts = invoice.invoiceDate.split("-");
       const invoiceYear = parseInt(dateParts[2]);
       
@@ -1761,37 +1770,62 @@ const config = new Chart('salesRegionChart', {
           sumByMonth[monthYearKey] = (sumByMonth[monthYearKey] || 0) + parseFloat(invoice.grandTotal)/100000;
           // console.log('sumByMonth[monthYearKey]: - ',sumByMonth[monthYearKey]);
       }
+      
   });
-  const resultArray2024 = Object.entries(sumByMonth).map(([monthYear, sum]) => ({
-    monthYear: monthYear,
+
+
+  const resultArray2024 = Object.entries(sumByMonth).map(([month, sum]) => ({
+    month: month,
     sum: sum
 }));
+
+this.MonthSalesTarget = this.MonthSalesTarget.map((data:any) => ({
+  ...data,
+  "MonthlySalesTarget": parseFloat(data.MonthlySalesTarget) / 100000
+}));
+let allMonths = new Set([...resultArray2024.map(data => data.month), ...this.MonthSalesTarget.map((data:any) => data.Month.toString())]);
+
+for (let month of allMonths) {
+  if (!resultArray2024.some(data => data.month === month)) {
+      resultArray2024.push({ "month": month, "sum": 0 });
+  }
+}
+
+for (let month of allMonths) {
+  if (!this.MonthSalesTarget.some((data:any) => data.Month.toString() === month)) {
+      this.MonthSalesTarget.push({ "Year": 2024, "Month": parseInt(month), "MonthlySalesTarget": 0 });
+  }
+}
+
+resultArray2024.sort((a, b) => parseInt(a.month) - parseInt(b.month));
+this.MonthSalesTarget.sort((a:any, b:any) => a.Month - b.Month);
+
+
+const salesData = resultArray2024.map(obj => obj.sum);
+const targetData = this.MonthSalesTarget.map((obj:any) => obj.MonthlySalesTarget);
 const monthNames2024 = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
-  resultArray2024.sort((a:any, b:any) => {
-    const monthA = monthNames2024.indexOf(a.monthYear);
-    const monthB = monthNames2024.indexOf(b.monthYear);
-    return monthA - monthB;
-});
-// const monthYears2024 = resultArray2024.map(obj => obj.monthYear);
-const monthYears2024value = resultArray2024.map((obj:any) => (obj.sum).toFixed(2));
+
+let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1]);
+
+
   var myChart = new Chart('divideChart', { 
       type: 'bar', 
       data: { 
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], 
+          labels: labels,
           datasets: [{ 
               label: 'Actual', 
               backgroundColor: "#359BB4", 
-              data: monthYears2024value, 
+              data: salesData, 
               borderWidth: 1,
               barThickness:20
           }, { 
               label: 'target', 
               backgroundColor: "#0AD11E", 
               // borderColor:'black',
-              data: [2200, 2000, 1000, 2600, 1222, 1622], 
+              data: targetData, 
               borderWidth: 1,
               barThickness:20
           }], 

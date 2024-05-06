@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SharedAPIService {
+  baseUrl: string = 'http://103.151.107.153:8000';
+  
+  constructor(private httpClient: HttpClient) { }
+
   uploadCSV(file: any) {
     const formData: FormData = new FormData();
-    formData.append('file', file, file.name);
+    formData.append('salesTargetFile', file, file.name);
+    const url = '/sales-target-upload';
+
+    const headers = new HttpHeaders().set('Accept', 'application/json');
     
-    return this.httpClient.post<any>('YOUR_API_URL', formData);
+    return this.httpClient.post<any>(this.baseUrl + url, formData, {
+      headers: headers
+    });
   }
-  baseUrl: any = 'http://103.151.107.153:8000';
-  constructor(private httpClient: HttpClient) {
-
-   }
-
+  
    getAllData(){
     let url='/customer-ageing-data';
     const getDataurl = this.baseUrl+url;

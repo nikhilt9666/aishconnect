@@ -618,7 +618,7 @@ this.buildCardData.monthlySalesDesc =  0;
         {
           label: '2023',
           data: monthYears2023value,
-          backgroundColor: 'rgba(40,125,200,.5)',
+          backgroundColor: 'rgba(40,125,200,.2)',
           borderColor: '#162DFD',
           fill: true,
           lineTension: 0,
@@ -627,7 +627,7 @@ this.buildCardData.monthlySalesDesc =  0;
         {
           label: '2024',
           data: monthYears2024value,
-          backgroundColor: 'rgba(75,10,125,.5)',
+          backgroundColor: 'rgba(75,10,125,.3)',
           borderColor: 'red',
           fill: true,
           lineTension: 0,
@@ -771,8 +771,10 @@ this.buildCardData.monthlySalesDesc =  0;
         this.topProducts = this.responceData.topProducts;
         this.topDivisions  = this.responceData.topDivisions;
         this.top5Performers = this.responceData.top5Performers;
-        this.dummyData = Object.entries(this.top5Performers).map(([company, score]) => ({ company, score }));
+        console.log('this.top5Performers', this.top5Performers);
+        this.dummyData = Object.entries(this.top5Performers).slice(1).map(([company, score]) => ({ company, score }));
         this.top5Performers= this.dummyData
+        console.log('this.top5Performers is', this.top5Performers);
         this.indicator= this.responceData.indicator;
         this.LoadData= false;
         this.salesOverviewDayly();
@@ -916,10 +918,12 @@ for (let division in divisionWiseSales) {
   console.log("dataTotaldivision=>", division);
   
 }
+console.log('Labels: ', labels);
+console.log('Data Total Division: ', dataTotaldivision);
 
 // Print the result
     const datadiv = {
-      labels: labels,
+      labels: labels, 
       // labels: Object.keys(divisionWiseSales),
       datasets: [{
         label: 'divsion wise',
@@ -940,6 +944,7 @@ for (let division in divisionWiseSales) {
       }],
       totalData: (this.buildCardData.totalGrandTotalSalesYOY /10000000).toFixed(2)
     };
+    
     const customDataLable = {
       id:'customDataLable',
       afterDatasetsDraw(chart:any,args:any,pluginOptions:any){

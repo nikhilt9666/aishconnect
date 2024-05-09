@@ -628,7 +628,7 @@ this.buildCardData.monthlySalesDesc =  0;
           label: '2024',
           data: monthYears2024value,
           backgroundColor: 'rgba(75,10,125,.3)',
-          borderColor: 'red',
+          borderColor: '#e263e5',
           fill: true,
           lineTension: 0,
           radius: 4,
@@ -772,7 +772,7 @@ this.buildCardData.monthlySalesDesc =  0;
         this.topDivisions  = this.responceData.topDivisions;
         this.top5Performers = this.responceData.top5Performers;
         console.log('this.top5Performers', this.top5Performers);
-        this.dummyData = Object.entries(this.top5Performers).slice(1).map(([company, score]) => ({ company, score }));
+        this.dummyData = Object.entries(this.top5Performers)?.slice(1, 6)?.map(([company, score]) => ({ company, score })) || [];
         this.top5Performers= this.dummyData
         console.log('this.top5Performers is', this.top5Performers);
         this.indicator= this.responceData.indicator;
@@ -784,10 +784,11 @@ this.buildCardData.monthlySalesDesc =  0;
                 
 
           this.sharedService.getSalesTarget().subscribe(response=>{
-            this.salesTargetResponse=response;
-            this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonth;
-            this.regionWiseTarget=this.salesTargetResponse.salesTargetByZone;
-          console.log(this.regionWiseTarget)
+            this.salesTargetResponse=response;  
+            this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonthZone;
+            this.regionWiseTarget=this.salesTargetResponse.salesDataByYearMonthZone;
+            console.log('MonthSalesTarget is',this.MonthSalesTarget)
+          console.log('regionWiseTarget is',this.regionWiseTarget)
           this.divideBarChart();
           this.salesRevinueRegion();
           
@@ -1696,17 +1697,26 @@ const values = Object.values(dataObj);
   
   }
   salesRevinueRegion() {
-let keys:string[]=[];
-let valuesInLacs:number[]=[];
+if (!this.MonthSalesTarget || !this.regionWiseTarget) {
+  console.error('MonthSalesTarget or regionWiseTarget is undefined or null.');
+  return;
+}
+console.log('MonthSalesTarget:', this.MonthSalesTarget);
+  console.log('regionWiseTarget:', this.regionWiseTarget);
 
-     Object.entries(this.regionWiseTarget).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        keys.push(key);
-        valuesInLacs.push((value as number) / 100000);
-      }
+  const targetData: number[] = this.regionWiseTarget.map((region: any) => {
+    const matchingItem = this.MonthSalesTarget.find((item: any) => {
+      return item.Zone === region.Zone && item.Month === region.Month;
     });
-
-  const labels =keys;
+    return matchingItem ? matchingItem.MonthlySalesTarget || 0 : 0;
+  });
+  console.log('targetData data is', targetData);
+  const actualData: number[] = this.regionWiseTarget.map((item: any) => item.grandTotal || 0);
+  const actualDataDividedBy100000: number[] = actualData.map(value => value / 100000);
+  console.log('actual data is', actualData);
+  console.log('actualDataDividedBy100000 is', actualDataDividedBy100000);
+  const labels: string[] = this.regionWiseTarget.map((item: any) => item.Zone);
+  console.log('labels is', labels);
   const data = {
   labels: labels,
   borderWidth: 1,
@@ -1714,7 +1724,7 @@ let valuesInLacs:number[]=[];
   datasets: [{
     axis: 'y',
     label: 'Actual',
-    data: [15, 39, 40, 61],
+    data: actualDataDividedBy100000,
     fill: false,
     backgroundColor: [
       '#00FFE0 ',
@@ -1727,30 +1737,31 @@ let valuesInLacs:number[]=[];
   {
     axis: 'y',
     label: 'Target',
-    data:valuesInLacs ,
+    data: targetData,
     fill: false,
     backgroundColor: [
       '#D4D4D4',
     ],
     borderColor: [
       '#D4D4D4'
-    ],
+    ],  
     borderWidth: 0.5
   }
 ]
 };
 const config = new Chart('salesRegionChart', {
   type: 'bar',
-  data,
+  data: data,
   options: {
     responsive: true,
     maintainAspectRatio: false,
     indexAxis: 'y',
     scales: {
       x: {
+        // display: false,
          grid: {
             display: false
-         }
+         },
       },
       y: {
          grid: {
@@ -1773,7 +1784,7 @@ const config = new Chart('salesRegionChart', {
         align: 'end',
         formatter: function (value, context) {
           // Display the actual data value
-          return value+' L';
+          return value+ 'L';
       }
     }
       

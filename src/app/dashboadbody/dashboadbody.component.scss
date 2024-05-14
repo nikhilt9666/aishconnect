@@ -263,3 +263,19 @@ li{
 .mt-18{
   margin-top: 1rem !important;
 }
+
+table {
+  border: none;
+  border-collapse: collapse;
+}
+td {
+  border:1px solid black;
+  border-top: none;
+  border-bottom: none;
+}
+td:first-child, :last-child {
+  border: none;
+}
+tr:last-child td {
+  border: none; 
+}

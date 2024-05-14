@@ -13,6 +13,7 @@ import {
 import { DailyCahrtPopupComponent } from '../sales-overview-daily/daily-cahrt-popup/daily-cahrt-popup.component';
 import { ChartDialogComponent } from './chart-dialog/chart-dialog.component';
 import { HttpClient, HttpParams } from '@angular/common/http';
+declare var Highcharts: any;
 
 @Component({
   selector: 'app-dashboadbody',
@@ -83,7 +84,7 @@ export class DashboadbodyComponent implements OnInit {
 
   ngOnInit(): void {
     this.responceDataFunction();
-
+    this.createCharts();
     
   // this.salesOnCreditChartFunction();
 }
@@ -394,7 +395,7 @@ getMonthName(month:any) {
     
     
     console.log(lastSevenValues);
-    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/10000).toFixed(3)));
+    const lastSevenValuesFloat = lastSevenValues.map((number:any) => parseFloat((number/100000).toFixed(3)));
     console.log("lastSevenValuesFloat", lastSevenValuesFloat);
     
     let maxNo =  Math.max.apply(Math, lastSevenValuesFloat);
@@ -762,8 +763,8 @@ this.buildCardData.monthlySalesDesc =  0;
         this.responceData = responceData;
         this.totalSales= this.responceData.totalSales;
 
-        this.salesTarget= this.responceData.salesTarget;
-        this.targetAchievement= this.responceData.targetAchievement;
+        // this.salesTarget= this.responceData.salesTarget;
+        // this.targetAchievement= this.responceData.targetAchievement;
         this.salesLastYear= this.responceData.salesLastYear;
         this.accountReceivables= this.responceData.accountReceivables;
         this.overdueReceivables= this.responceData.overdueReceivables;
@@ -784,7 +785,11 @@ this.buildCardData.monthlySalesDesc =  0;
                 
 
           this.sharedService.getSalesTarget().subscribe(response=>{
-            this.salesTargetResponse=response;  
+            this.salesTargetResponse=response;
+            this.salesTarget = this.salesTargetResponse.salesTargetStats;
+            this.targetAchievement = this.salesTargetResponse.targetAchievementStats;
+            console.log('targetAchievement is', this.targetAchievement);
+            console.log('salesTarget is', this.salesTarget);  
             this.MonthSalesTarget=this.salesTargetResponse.salesTargetByYearMonthZone;
             this.regionWiseTarget=this.salesTargetResponse.salesDataByYearMonthZone;
             console.log('MonthSalesTarget is',this.MonthSalesTarget)
@@ -1393,75 +1398,1453 @@ const values = Object.values(dataObj);
     }
   });
   
-  new Chart(
-    'salesOnCreditChart',{
-      type: 'bar',
-      data: {
-        labels: ['Healthcare','Generic','Aishcore','SSD','FFD'],
-        datasets: [{
-          label:'LY',
-          data: [727, 589, 537, 543, 574],
-          backgroundColor: "#00CD15",
-          hoverBackgroundColor: "#00CD15",
-          borderWidth: 1,
-          barThickness:18
-        },{
-          label:'Target',
-          data: [238, 553, 746, 884, 903],
-          backgroundColor: "#D4D4D4",
-          hoverBackgroundColor: "#D4D4D4",
-          borderWidth: 1,
-          barThickness:18
-        },{
-          label:'CY',
-          data: [1238, 553, 746, 884, 903],
-          backgroundColor: "#D90000",
-          hoverBackgroundColor: "#D90000",
-          borderWidth: 1,
-          barThickness:18
-        }]
-      },
+  // new Chart(
+  //   'salesOnCreditChart',{
+  //     type: 'bar',
+  //     data: {
+  //       labels: ['Healthcare','Generic','Aishcore','SSD','FFD'],
+  //       datasets: [{
+  //         label:'LY',
+  //         data: [727, 589, 537, 543, 574],
+  //         backgroundColor: "#00CD15",
+  //         hoverBackgroundColor: "#00CD15",
+  //         borderWidth: 1,
+  //         barThickness:18
+  //       },{
+  //         label:'Target',
+  //         data: [238, 553, 746, 884, 903],
+  //         backgroundColor: "#D4D4D4",
+  //         hoverBackgroundColor: "#D4D4D4",
+  //         borderWidth: 1,
+  //         barThickness:18
+  //       },{
+  //         label:'CY',
+  //         data: [1238, 553, 746, 884, 903],
+  //         backgroundColor: "#D90000",
+  //         hoverBackgroundColor: "#D90000",
+  //         borderWidth: 1,
+  //         barThickness:18
+  //       }]
+  //     },
        
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        indexAxis: 'y',
-        scales: {
-          x: {
-            stacked: true,
-            grid: {
-              display: false
-           }
-          },
-          y: {
-            stacked: true,
-            grid: {
-              display: false
-           }
-          }
-        },
-        plugins: {
-          legend: {
-            display: false
-          },
+  //     options: {
+  //       responsive: true,
+  //       maintainAspectRatio: false,
+  //       indexAxis: 'y',
+  //       scales: {
+  //         x: {
+  //           stacked: true,
+  //           grid: {
+  //             display: false
+  //          }
+  //         },
+  //         y: {
+  //           stacked: true,
+  //           grid: {
+  //             display: false
+  //          }
+  //         }
+  //       },
+  //       plugins: {
+  //         legend: {
+  //           display: false
+  //         },
         
-          // Change options for ALL labels of THIS CHART
-          datalabels: {
-            display:false,
-            // color: '#36A2EB',
-            // anchor: 'end',
-            // align: 'end',
-            formatter: function (value:any, context:any) {
-              // Display the actual data value
-              return value+' L';
-          }
-          },
-        },
+  //         // Change options for ALL labels of THIS CHART
+  //         datalabels: {
+  //           display:false,
+  //           // color: '#36A2EB',
+  //           // anchor: 'end',
+  //           // align: 'end',
+  //           formatter: function (value:any, context:any) {
+  //             // Display the actual data value
+  //             return value+' L';
+  //         }
+  //         },
+  //       },
+  //     },
+  //   }
+  // );
+  }
+  createCharts() {
+    // Chart configuration for container 1
+    Highcharts.chart('container1', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
       },
-      
-      
-    }
-  );
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal', 
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string {
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [1],
+        color: '#d80000'
+      }]
+    });
+
+    // Chart configuration for container 2
+    Highcharts.chart('container2', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none',
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [12],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 3
+    Highcharts.chart('container3', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : '';
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [20],
+        color: '#d80000'
+      }]
+    });
+
+    // Chart configuration for container 4
+    Highcharts.chart('container4', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [6],
+        color: '#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container5', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [5],
+        color: '#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container6', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [20],
+        color: '#d3d700'
+      }]
+    });
+    Highcharts.chart('container7', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [20],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 4
+    Highcharts.chart('container8', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [18],
+        color: '#d3d700'
+      }]
+    });
+    Highcharts.chart('container9', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [10],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 2
+    Highcharts.chart('container10', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [10],
+        color: '#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container11', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [12],
+        color: '#0ad11d'
+      }]
+    });
+
+    // Chart configuration for container 2
+    Highcharts.chart('container12', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [20],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 3
+    Highcharts.chart('container13', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [14],
+        color: '#0ad11d'
+      }]
+    });
+
+    // Chart configuration for container 4
+    Highcharts.chart('container14', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [80],
+        color: '#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container15', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [80],
+        color: '#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container16', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [12],
+        color: '#d80000'
+      }]
+    });
+    Highcharts.chart('container17', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [20],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 4
+    Highcharts.chart('container18', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [14],
+        color: '#d80000'
+      }]
+    });
+    Highcharts.chart('container19', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [40],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 2
+    Highcharts.chart('container20', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [40],
+        color:'#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container21', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [14],
+        color: '#0ad11d'
+      }]
+    });
+
+    // Chart configuration for container 2
+    Highcharts.chart('container22', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Joe',
+        data: [20],
+        color: '#cbc6c6'
+      }]
+    });
+
+    // Chart configuration for container 3
+    Highcharts.chart('container23', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [16],
+        color: '#0ad11d'
+      }]
+    });
+
+    // Chart configuration for container 4
+    Highcharts.chart('container24', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'percentage',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'Jane',
+        data: [80],
+        color: '#cbc6c6'
+      }]
+    });
+    Highcharts.chart('container25', {
+      chart: {
+        type: 'bar',
+        margin: [0, 0, 0, 0]
+      },
+      title: {
+        text: null,
+        margin: 0
+      },
+      xAxis: {
+        categories: [''],
+        lineWidth: 0
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        gridLineWidth: 0,
+        lineWidth: 0
+      },
+      legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true,
+        enabled: false
+      },
+      tooltip: {
+        pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>',
+        shared: true
+      },
+      credits: {
+        enabled: false // Disable Highcharts.com label
+      },
+      plotOptions: {
+        series: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            color: 'black',
+            style: {
+              textOutline: 'none', 
+            },
+            formatter: function (): string { 
+              const point: any = this; 
+              return point.y !== undefined ? point.y.toString() : ''; 
+            }
+          }
+        }
+      },
+      series: [{
+        name: 'John',
+        data: [80],
+        color: '#cbc6c6'
+      }]
+    });
   }
   dayReceiveOutStandingFunction() {
     // throw new Error('Method not implemented.');
@@ -1704,13 +3087,13 @@ if (!this.MonthSalesTarget || !this.regionWiseTarget) {
 console.log('MonthSalesTarget:', this.MonthSalesTarget);
   console.log('regionWiseTarget:', this.regionWiseTarget);
 
-  const targetData: number[] = this.regionWiseTarget.map((region: any) => {
+  const targetDataByZone: number[] = this.regionWiseTarget.map((region: any) => {
     const matchingItem = this.MonthSalesTarget.find((item: any) => {
       return item.Zone === region.Zone && item.Month === region.Month;
     });
     return matchingItem ? matchingItem.MonthlySalesTarget || 0 : 0;
   });
-  console.log('targetData data is', targetData);
+  console.log('targetDataByZone data is', targetDataByZone);
   const actualData: number[] = this.regionWiseTarget.map((item: any) => item.grandTotal || 0);
   const actualDataDividedBy100000: number[] = actualData.map(value => value / 100000);
   console.log('actual data is', actualData);
@@ -1737,7 +3120,7 @@ console.log('MonthSalesTarget:', this.MonthSalesTarget);
   {
     axis: 'y',
     label: 'Target',
-    data: targetData,
+    data: targetDataByZone,
     fill: false,
     backgroundColor: [
       '#D4D4D4',
@@ -1848,15 +3231,39 @@ resultArray2024.sort((a, b) => parseInt(a.month) - parseInt(b.month));
 this.MonthSalesTarget.sort((a:any, b:any) => a.Month - b.Month);
 
 
-const salesData = resultArray2024.map(obj => obj.sum);
-const targetData = this.MonthSalesTarget.map((obj:any) => obj.MonthlySalesTarget);
+const salesData = resultArray2024.map((obj, index) => {
+  return {
+    month: obj.month,
+    value: obj.sum
+  };
+});
+
 const monthNames2024 = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
-let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1]);
+this.sharedService.getSalesTarget().subscribe((response: any) => {
+  if (response && Array.isArray(response.salesTargetByYearMonth)) {
+    const targetData = monthNames2024.map(month => {
+      const targetItem = response.salesTargetByYearMonth.find((item: any) => item.Month === monthNames2024.indexOf(month) + 1);
+      return {
+        month: month,
+        value: targetItem ? targetItem.MonthlySalesTarget / 100000 : 0 
+      };
+    });
 
+    console.log('targetData is', targetData);
+
+
+let labels = monthNames2024;
+
+const salesData = monthNames2024.map(month => {
+  const salesItem = resultArray2024.find((obj: any) => parseInt(obj.month) === monthNames2024.indexOf(month) + 1);
+  return salesItem ? salesItem.sum : 0; 
+});
+
+console.log('Actual salesData is', salesData);
 
   var myChart = new Chart('divideChart', { 
       type: 'bar', 
@@ -1872,11 +3279,10 @@ let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1
               label: 'target', 
               backgroundColor: "#0AD11E", 
               // borderColor:'black',
-              data: targetData, 
+              data: targetData.map((item: any) => item.value),
               borderWidth: 1,
               barThickness:20
-          }], 
-          
+          }],   
       }, 
       options: { 
         responsive: true,
@@ -1889,12 +3295,10 @@ let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1
               
         
           // Change options for ALL labels of THIS CHART
-          datalabels: {
-            
+          datalabels: { 
             display:false
           },
           legend: {
-            
               display: true,
               position: 'top',
               labels: {
@@ -1902,9 +3306,7 @@ let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1
                 boxWidth:25,
                 boxHeight:4
               },
-            
          } 
-        
           }, 
           scales: {
           
@@ -1913,7 +3315,10 @@ let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1
                   display: false,
                   
                },
-               stacked: true
+               stacked: true,
+               ticks: {
+                autoSkip: false // Disable auto skipping of ticks
+             }
             },
             y: {
                grid: {
@@ -1925,6 +3330,12 @@ let labels = resultArray2024.map(data => monthNames2024[parseInt(data.month) - 1
          
         },
       } 
+    });
+  }
+  else {
+    console.log('Sales target data is not a valid array:', response.salesTargetByYearMonth);
+    // Handle the case where response is not an array, e.g., show an error message or handle it gracefully.
+  }
   }); 
   }
   gearChart() {

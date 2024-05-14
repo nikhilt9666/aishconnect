@@ -141,19 +141,19 @@
           <div class="two-tone-card mm-10 white-color" style="background: #524BA6;">
             <div class="row">
               <div class="col-6 ">
-                <div class="number-text"><strong>{{targetAchievement.MoM}}</strong></div>
+                <div class="number-text"><strong>{{targetAchievement.MoM / 10000000 | number: '1.2-2'}}</strong></div>
                 <div class="row">
                   <div class="small-text col-6">MOM</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.MoMPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-6 ">
-                <div class="number-text"><strong>{{targetAchievement.YoY}}</strong></div>
+                <div class="number-text"><strong>{{targetAchievement.YoY / 10000000 | number: '1.2-2'}}</strong></div>
                 <div class="row">
                   <div class="small-text col-6">YOY</div> <div class="col-6 number-text-small"><strong>{{targetAchievement.YoYPct | number:'1.2-2'}}</strong></div> 
                 </div>
               </div>
               <div class="col-12">
-                <div class="text-title-size">TARGET ACHIEVMENT(%)</div>
+                <div class="text-title-size">TARGET ACHIEVEMENT(CR.)</div>
               </div>
             </div>
           </div>
@@ -417,7 +417,7 @@
 
           <div class="row">
             <div class=" col-10 folt-right font-size-14 text-end mt-18" (click)="zoomChartFunction('division')">
-              <mat-icon class="" style="margin-top: 2px !important;"> zoom_out_map</mat-icon>
+              <mat-icon class="" style="margin-top: 10px !important;"> zoom_out_map</mat-icon>
             </div>
           <div class="chart-div-align " style="text-align: center;padding-left: 15%;">
             <canvas #salesChartDivision id="myChart2" class="donut-chart-alignment" (click)="divisionwiseSaleFunction()" style="margin-top: 5px;"></canvas>
@@ -523,7 +523,112 @@
           </div>
           
           <div class="chart-div-align">
-            <canvas id="salesOnCreditChart"></canvas>
+            <!-- <canvas id="salesOnCreditChart"></canvas> -->
+            <table border="1">
+              <tr>
+                <td style="color: black; padding-right: 10px;">Healthcare</td>
+                <td>
+                  <div id="container1" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <!-- <td>Info</td> -->
+                <td>
+                  <div id="container2" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container3" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container4" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container5" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>  
+              </tr>
+              <tr>
+                <td style="color: black">Generic</td>
+                <td>
+                  <div id="container6" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <!-- <td>Info</td> -->
+                <td>
+                  <div id="container7" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container8" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container9" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container10" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+              </tr>
+              <tr>
+                <td style="color: black">Aishcare</td>
+                <td>
+                  <div id="container11" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <!-- <td>Info</td> -->
+                <td>
+                  <div id="container12" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container13" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container14" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container15" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+              </tr>
+              <tr>
+                <td style="color: black">SSD</td>
+                <td>
+                  <div id="container16" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <!-- <td>Info</td> -->
+                <td>
+                  <div id="container17" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container18" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container19" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container20" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+              </tr>
+              <tr>
+                <td style="color: black">FTD</td>
+                <td>
+                  <div id="container21" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <!-- <td>Info</td> -->
+                <td>
+                  <div id="container22" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container23" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container24" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+                <td>
+                  <div id="container25" style="min-width: 50px; height: 50px; margin: 0 auto"></div>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td style="padding-left: 10px; color: black">LY</td>
+                <td style="padding-left: 10px; color: black">Target</td>
+                <td style="padding-left: 10px; color: black">CY</td>
+                <td style="padding-left: 10px; color: black">Achieve%</td>
+                <td style="padding-left: 10px; color: black">Growth%</td>
+              </tr>
+            </table>            
           </div>
         </div>
         <div class="col-4 chat-div-alignment pp-5 font-size-10">

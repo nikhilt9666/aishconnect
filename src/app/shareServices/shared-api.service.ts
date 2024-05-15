@@ -27,8 +27,11 @@ export class SharedAPIService {
     const getDataurl = this.baseUrl+url;
       return this.httpClient.get(getDataurl);
    }
+   getCustomerAgeStats() {
+    const custStatUrl = this.baseUrl + '/customer-ageing-stats';
+    return this.httpClient.get(custStatUrl);
+   }
    getSpecificData(url:any, payload:any){
-
     const getDataurl = this.baseUrl+url;
      return this.httpClient.post(getDataurl,payload);
    }

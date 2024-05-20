@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SharedAPIService } from '../shareServices/shared-api.service';
 
 @Component({
@@ -8,7 +12,7 @@ import { SharedAPIService } from '../shareServices/shared-api.service';
 })
 export class UploadFileComponent implements OnInit {
 
-  constructor(private apiService: SharedAPIService) { }
+  constructor(private apiService: SharedAPIService, private dialog: MatDialog, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -54,6 +58,15 @@ export class UploadFileComponent implements OnInit {
       (response:any) => {
         console.log('File uploaded successfully:', response);
         // Handle response as needed
+        const dialogRef = this.dialog.open(UploadFileSuccessDialogComponent, {
+          width: '250px',
+          data: { message: 'File uploaded successfully.' }
+        });
+
+        dialogRef.afterClosed().subscribe(() => {
+          this.router.navigate(['']); // Replace 'your-other-component' with the actual route
+        });
+        
       },
       (error:any) => {
         console.error('Error uploading file:', error);
@@ -61,5 +74,19 @@ export class UploadFileComponent implements OnInit {
       }
     );
   }
+}
 
+@Component({
+  selector: 'app-upload-file-success-dialog',
+  template: `
+    <h1>{{ data.message }}</h1>
+    <button mat-button (click)="closeDialog()">OK</button>
+  `
+})
+export class UploadFileSuccessDialogComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<UploadFileSuccessDialogComponent>) { }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
 }

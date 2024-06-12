@@ -40,8 +40,4 @@ export class SharedAPIService {
     const url = this.baseUrl+'/sales-target-data';
     return this.httpClient.get(url);
    }
-  
-   
-
-  
 }

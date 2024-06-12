@@ -84,6 +84,7 @@ export class DashboadbodyComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.setCurrentMonth();
     this.responceDataFunction();
     this.createCharts();
 
@@ -743,33 +744,48 @@ export class DashboadbodyComponent implements OnInit {
   topProducts: any = {};
   topDivisions: any = {};
   top5Performers: any = {};
+  selectedYear: string = '2024';
+  selectedMonth: string = 'January';
+  selectedCompany: string = 'All';
   dummyData: any = {};
   LoadData: boolean = true;
   indicator: any = [{ 'indicatorName': 'Monthly Sale', 'period': 'Apr (this month) vs Mar (last month)', 'currentMonthSales': {}, 'previousMonthSales': { 'invoiceMonth': 'Mar', 'invoiceYear': '2024', 'grandTotal': 24908534.0 }, 'rateChange': -100.0 }];
+
+  setCurrentMonth(): void {
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const currentMonthIndex = new Date().getMonth();
+    this.selectedMonth = monthNames[currentMonthIndex];
+  }
+
+  onYearChange(event: any): void {
+    this.selectedYear = event.target.value;
+    this.responceDataFunction();
+  }
+
+  onMonthChange(event: any): void {
+    this.selectedMonth = event.target.value;
+    this.responceDataFunction();
+  }
+
+  onCompanyChange(event: any): void {
+    this.selectedCompany = event.target.value;
+    this.responceDataFunction();
+  }
   responceDataFunction() {
     const getUrl = '/sales-data';
-    // const salesDataUrl = 'assets/SalesData.txt';
     const requestData = {
-      "year": "2024",
-      "month": "march",
-      "companyCode": "c2002"
+      "year": this.selectedYear,
+      "month": this.selectedMonth,
+      "companyCode": this.selectedCompany
     }
-
-    //     let params = new HttpParams()
-    // .set('year', requestData.year)
-    // .set('month', requestData.month)
-    // .set('companyCode', requestData.companyCode);
-    // this.http.get(salesDataUrl).subscribe((responceData: any) => {
     this.sharedService.getSpecificData(getUrl, requestData).subscribe(responceData => {
       console.log('sales responceData: -', responceData);
       this.responceData = responceData;
       this.totalSales = this.responceData.totalSales;
-
-      // this.salesTarget= this.responceData.salesTarget;
-      // this.targetAchievement= this.responceData.targetAchievement;
       this.salesLastYear = this.responceData.salesLastYear;
-      // this.accountReceivables= this.responceData.accountReceivables;
-      // this.overdueReceivables= this.responceData.overdueReceivables;
       this.topCustomers = this.responceData.topCustomers;
       this.topProducts = this.responceData.topProducts;
       this.topDivisions = this.responceData.topDivisions;
@@ -788,18 +804,21 @@ export class DashboadbodyComponent implements OnInit {
 
       this.sharedService.getSalesTarget().subscribe(response => {
         this.salesTargetResponse = response;
+        console.log('this.salesTargetResponse is', this.salesTargetResponse );
         this.salesTarget = this.salesTargetResponse.salesTargetStats;
         this.targetAchievement = this.salesTargetResponse.targetAchievementStats;
         console.log('targetAchievement is', this.targetAchievement);
         console.log('salesTarget is', this.salesTarget);
-        this.MonthSalesTarget = this.salesTargetResponse.salesTargetByYearMonthZone;
-        this.regionWiseTarget = this.salesTargetResponse.salesDataByYearMonthZone;
+        const currentMonth = new Date().getMonth() + 1;
+        this.MonthSalesTarget = this.salesTargetResponse.salesTargetByYearMonthZone.filter ((data: any) => data.Month === currentMonth);
+        this.regionWiseTarget = this.salesTargetResponse.salesDataByYearMonthZone.filter((data: any) => data.Month === currentMonth);
         console.log('MonthSalesTarget is', this.MonthSalesTarget)
         console.log('regionWiseTarget is', this.regionWiseTarget)
         this.divideBarChart();
         this.salesRevinueRegion();
 
       })
+      
       this.sharedService.getCustomerAgeStats().subscribe(response => {
         console.log('API response is', response);
         this.customerAgeStatsResponse = response;
@@ -1146,8 +1165,8 @@ export class DashboadbodyComponent implements OnInit {
           y: {
             grid: {
               display: true
-            }
-
+            },
+            suggestedMax: 4500
           }
         },
         plugins: {
@@ -3115,11 +3134,11 @@ export class DashboadbodyComponent implements OnInit {
       const matchingItem = this.MonthSalesTarget.find((item: any) => {
         return item.Zone === region.Zone && item.Month === region.Month;
       });
-      return matchingItem ? matchingItem.MonthlySalesTarget || 0 : 0;
+      return matchingItem ? parseFloat(matchingItem.MonthlySalesTarget).toFixed(2) : 0;
     });
     console.log('targetDataByZone data is', targetDataByZone);
     const actualData: number[] = this.regionWiseTarget.map((item: any) => item.grandTotal || 0);
-    const actualDataDividedBy100000: number[] = actualData.map(value => value / 100000);
+    const actualDataDividedBy100000: number[] = actualData.map(value => parseFloat((value / 100000).toFixed(2)));
     console.log('actual data is', actualData);
     console.log('actualDataDividedBy100000 is', actualDataDividedBy100000);
     const labels: string[] = this.regionWiseTarget.map((item: any) => item.Zone);
